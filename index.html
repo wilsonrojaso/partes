@@ -275,7 +275,7 @@
         <div class="campo-grupo">
             <div>
                 <label>Grado:</label>
-                <input type="text" id="add-grado" placeholder="Ej: IJ, IT, SI, PT">
+                <input type="text" id="add-grado" placeholder="Ej: IJ, IT, SI, PT, PP">
             </div>
             <div>
                 <label>Apellidos y Nombres:</label>
@@ -293,12 +293,12 @@
                 </select>
             </div>
             <div>
-                <label>Categoría Estructural:</label>
+                <label>Categoría Jerárquica:</label>
                 <select id="add-categoria">
-                    <option value="0">Oficiales (OF)</option>
-                    <option value="1">Suboficiales (SU)</option>
-                    <option value="2">Nivel Ejecutivo (NE)</option>
-                    <option value="3">Agentes / Auxiliares (AG/AUX)</option>
+                    <option value="0">Oficiales (MY-CT-TE-ST)</option>
+                    <option value="1">Nivel Ejecutivo (CM-SC-IJ-IT-SI)</option>
+                    <option value="2">Patrulleros (PT)</option>
+                    <option value="3">Patrulleros de Policía (PP)</option>
                 </select>
             </div>
         </div>
@@ -328,19 +328,20 @@
         "ADMIN": { pin: "6098", jefe: "WILSON ROJAS" }
     };
 
+    // Jerarquías reorganizadas: cat 0 = OF, cat 1 = NE (IJ, IT, SI, SC), cat 2 = PT, cat 3 = PP
     let DB = [
         // GRUPO GRANADEROS
-        { grupo: "GRANADEROS", grado: "IJ", apellido: "FERIA FERIA", cat: 2 },
-        { grupo: "GRANADEROS", grado: "IT", apellido: "CAMACHO GOMEZ", cat: 2 },
-        { grupo: "GRANADEROS", grado: "SI", apellido: "DEVIA VARGAS", cat: 2 },
-        { grupo: "GRANADEROS", grado: "SI", apellido: "MELO ACHURY", cat: 2 },
-        { grupo: "GRANADEROS", grado: "SI", apellido: "AGUIRRE MOLINA", cat: 2 },
-        { grupo: "GRANADEROS", grado: "SI", apellido: "FERIA RODRIGUEZ", cat: 2 },
-        { grupo: "GRANADEROS", grado: "SI", apellido: "MOREANO ARCOS", cat: 2 },
-        { grupo: "GRANADEROS", grado: "SI", apellido: "RAMIREZ SOTO", cat: 2 },
-        { grupo: "GRANADEROS", grado: "SI", apellido: "ARCINIEGAS MENDEZ", cat: 2 },
-        { grupo: "GRANADEROS", grado: "SI", apellido: "VELASQUEZ QUINTERO", cat: 2 },
-        { grupo: "GRANADEROS", grado: "SI", apellido: "TRUJILLO CUELLAR", cat: 2 },
+        { grupo: "GRANADEROS", grado: "IJ", apellido: "FERIA FERIA", cat: 1 },
+        { grupo: "GRANADEROS", grado: "IT", apellido: "CAMACHO GOMEZ", cat: 1 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "DEVIA VARGAS", cat: 1 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "MELO ACHURY", cat: 1 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "AGUIRRE MOLINA", cat: 1 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "FERIA RODRIGUEZ", cat: 1 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "MOREANO ARCOS", cat: 1 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "RAMIREZ SOTO", cat: 1 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "ARCINIEGAS MENDEZ", cat: 1 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "VELASQUEZ QUINTERO", cat: 1 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "TRUJILLO CUELLAR", cat: 1 },
         { grupo: "GRANADEROS", grado: "PT", apellido: "GONZALEZ RESTREPO", cat: 2 },
         { grupo: "GRANADEROS", grado: "PT", apellido: "CONTRERAS BARRAGAN", cat: 2 },
         { grupo: "GRANADEROS", grado: "PT", apellido: "TRIANA MORENO", cat: 2 },
@@ -355,17 +356,17 @@
         { grupo: "GRANADEROS", grado: "PT", apellido: "FRANCO SILVA", cat: 2 },
 
         // GRUPO COR
-        { grupo: "COR", grado: "IJ", apellido: "SANABRIA TORRALBA", cat: 2 },
-        { grupo: "COR", grado: "IJ", apellido: "LAVERDE ABREGO", cat: 2 },
-        { grupo: "COR", grado: "IT", apellido: "AVENDAÑO FIGUEROA", cat: 2 },
-        { grupo: "COR", grado: "SI", apellido: "VARGAS ALDANA", cat: 2 },
-        { grupo: "COR", grado: "SI", apellido: "CRUZ SUAREZ", cat: 2 },
-        { grupo: "COR", grado: "SI", apellido: "ACEVEDO RODRIGUEZ", cat: 2 },
-        { grupo: "COR", grado: "SI", apellido: "SUAREZ GARCIA", cat: 2 },
-        { grupo: "COR", grado: "SI", apellido: "FORERO RAMIREZ", cat: 2 },
-        { grupo: "COR", grado: "SI", apellido: "RONDON CANIZALES", cat: 2 },
-        { grupo: "COR", grado: "SI", apellido: "BEDOYA GIRALDO", cat: 2 },
-        { grupo: "COR", grado: "SI", apellido: "MONTENEGRO ILES", cat: 2 },
+        { grupo: "COR", grado: "IJ", apellido: "SANABRIA TORRALBA", cat: 1 },
+        { grupo: "COR", grado: "IJ", apellido: "LAVERDE ABREGO", cat: 1 },
+        { grupo: "COR", grado: "IT", apellido: "AVENDAÑO FIGUEROA", cat: 1 },
+        { grupo: "COR", grado: "SI", apellido: "VARGAS ALDANA", cat: 1 },
+        { grupo: "COR", grado: "SI", apellido: "CRUZ SUAREZ", cat: 1 },
+        { grupo: "COR", grado: "SI", apellido: "ACEVEDO RODRIGUEZ", cat: 1 },
+        { grupo: "COR", grado: "SI", apellido: "SUAREZ GARCIA", cat: 1 },
+        { grupo: "COR", grado: "SI", apellido: "FORERO RAMIREZ", cat: 1 },
+        { grupo: "COR", grado: "SI", apellido: "RONDON CANIZALES", cat: 1 },
+        { grupo: "COR", grado: "SI", apellido: "BEDOYA GIRALDO", cat: 1 },
+        { grupo: "COR", grado: "SI", apellido: "MONTENEGRO ILES", cat: 1 },
         { grupo: "COR", grado: "PT", apellido: "RODRIGUEZ FLOREZ", cat: 2 },
         { grupo: "COR", grado: "PT", apellido: "PEREZ CRESPO", cat: 2 },
         { grupo: "COR", grado: "PT", apellido: "BERMUDEZ LOPEZ", cat: 2 },
@@ -374,25 +375,24 @@
 
         // GRUPO TIRO POLICIAL
         { grupo: "TIRO", grado: "SC", apellido: "RUEDA BERNAL", cat: 1 },
-        { grupo: "TIRO", grado: "IJ", apellido: "QUINTERO MANJARREZ", cat: 2 },
-        { grupo: "TIRO", grado: "IJ", apellido: "ROBAYO MENDEZ", cat: 2 },
-        { grupo: "TIRO", grado: "IJ", apellido: "ROMERO SANCHEZ", cat: 2 },
-        { grupo: "TIRO", grado: "IT", apellido: "LOPEZ TANGARIFE", cat: 2 },
-        { grupo: "TIRO", grado: "IT", apellido: "HERNANDEZ CASTRO", cat: 2 },
-        { grupo: "TIRO", grado: "IT", apellido: "ARCE TAPASCO", cat: 2 },
-        { grupo: "TIRO", grado: "IT", apellido: "ROJAS OCHOA", cat: 2 },
-        { grupo: "TIRO", grado: "IT", apellido: "CASTAÑEDA PEREZ", cat: 2 },
-        { grupo: "TIRO", grado: "SI", apellido: "MUÑOZ MOSQUERA", cat: 2 },
-        { grupo: "TIRO", grado: "SI", apellido: "TORRES ARNEDO", cat: 2 },
-        { grupo: "TIRO", grado: "SI", apellido: "OTALORA GRAJALES", cat: 2 },
-        { grupo: "TIRO", grado: "SI", apellido: "MAHECHA RAMIREZ", cat: 2 },
+        { grupo: "TIRO", grado: "IJ", apellido: "QUINTERO MANJARREZ", cat: 1 },
+        { grupo: "TIRO", grado: "IJ", apellido: "ROBAYO MENDEZ", cat: 1 },
+        { grupo: "TIRO", grado: "IJ", apellido: "ROMERO SANCHEZ", cat: 1 },
+        { grupo: "TIRO", grado: "IT", apellido: "LOPEZ TANGARIFE", cat: 1 },
+        { grupo: "TIRO", grado: "IT", apellido: "HERNANDEZ CASTRO", cat: 1 },
+        { grupo: "TIRO", grado: "IT", apellido: "ARCE TAPASCO", cat: 1 },
+        { grupo: "TIRO", grado: "IT", apellido: "ROJAS OCHOA", cat: 1 },
+        { grupo: "TIRO", grado: "IT", apellido: "CASTAÑEDA PEREZ", cat: 1 },
+        { grupo: "TIRO", grado: "SI", apellido: "MUÑOZ MOSQUERA", cat: 1 },
+        { grupo: "TIRO", grado: "SI", apellido: "TORRES ARNEDO", cat: 1 },
+        { grupo: "TIRO", grado: "SI", apellido: "OTALORA GRAJALES", cat: 1 },
+        { grupo: "TIRO", grado: "SI", apellido: "MAHECHA RAMIREZ", cat: 1 },
         { grupo: "TIRO", grado: "PT", apellido: "ESPINEL MUÑOZ", cat: 2 },
         { grupo: "TIRO", grado: "PT", apellido: "MURILLO RUIZ", cat: 2 }
     ];
 
     let grupoActivo = "";
 
-    // Poner fecha de mañana automáticamente al iniciar
     window.onload = function() {
         const fInput = document.getElementById('fecha-parte');
         if(fInput) {
@@ -477,6 +477,7 @@
         const actividades = document.getElementById('actividades-texto').value || "Sin novedades en actividades.";
         const lema = document.getElementById('lema-grupo').value;
 
+        // Estructura de 4 niveles: [Oficiales, Nivel Ejecutivo, Patrulleros, Patrulleros de Policía]
         let fEfe = [0, 0, 0, 0];
         let conteos = {
             "Formación": [0,0,0,0], "Laborando": [0,0,0,0], "Servicios": [0,0,0,0],
@@ -501,6 +502,7 @@
             listasNombres[novedad].push(nombreCompleto);
         });
 
+        // Suma de novedades específicas (todo lo que NO sea Formación, Laborando o Servicios)
         let fNov = [0,0,0,0];
         for(let n in conteos) {
             if(n !== "Formación" && n !== "Laborando" && n !== "Servicios") {
@@ -508,6 +510,7 @@
             }
         }
 
+        // Formato exacto 0-0-0-0= 0
         const fmt = (a) => `${a[0]}-${a[1]}-${a[2]}-${a[3]}= ${a.reduce((x,y)=>x+y,0)}`;
         const impLista = (arr) => arr.length > 0 ? arr.map(n => `  ${n}`).join('\n') : "  Ninguno";
 
@@ -532,7 +535,11 @@
         txt += `${impLista(listasNombres["Servicios"])}\n`;
         txt += `......................................\n`;
         txt += `*NOVEDADES ESPECIFICAS*\n`;
-        txt += `*FRANQUICIA*\n${fmt(conteos["Franquicia"])}\n\n`;
+        
+        // CORRECCIÓN: Ahora Franquicia despliega nombres completos y su cabecera
+        txt += `*FRANQUICIA*\n${fmt(conteos["Franquicia"])}\n`;
+        txt += `  *Grado* *Apellido*\n`;
+        txt += `${impLista(listasNombres["Franquicia"])}\n\n`;
         
         txt += `*PERMISOS ESPECIALES*\n${fmt(conteos["Permisos Especiales"])}\n`;
         txt += `  *Grado* *Apellido*\n`;
@@ -581,7 +588,7 @@
     function copiarAlPortapapeles() {
         const elTexto = document.getElementById('texto-reporte-final').innerText;
         navigator.clipboard.writeText(elTexto).then(() => {
-            alert("¡Reporte copiado!");
+            alert("¡Reporte copiado con la nueva jerarquía!");
         }).catch(err => {
             alert("Error al copiar automáticamente.");
         });
