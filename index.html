@@ -329,9 +329,8 @@
         "ADMIN": { pin: "6098", jefe: "WILSON ROJAS" }
     };
 
-    // BASE DE DATOS CORREGIDA: cat 1 para Mandos Ejecutivos (IJ, IT, SI), cat 2 para Patrulleros (PT)
     let DB = [
-        // GRUPO GRANADEROS (11 Mandos del Nivel Ejecutivo [cat: 1] y 12 Patrulleros [cat: 2])
+        // GRUPO GRANADEROS
         { grupo: "GRANADEROS", grado: "IJ", apellido: "FERIA FERIA", cat: 1 },
         { grupo: "GRANADEROS", grado: "IT", apellido: "CAMACHO GOMEZ", cat: 1 },
         { grupo: "GRANADEROS", grado: "SI", apellido: "DEVIA VARGAS", cat: 1 },
@@ -383,12 +382,12 @@
         { grupo: "TIRO", grado: "IT", apellido: "HERNANDEZ CASTRO", cat: 1 },
         { grupo: "TIRO", grado: "IT", apellido: "ARCE TAPASCO", cat: 1 },
         { grupo: "TIRO", grado: "IT", apellido: "ROJAS OCHOA", cat: 1 },
-        { grupo: "TIRO", grado: "IT", apellido: "CASTAÑEDA PEREZ", cat: 1 },
-        { grupo: "TIRO", grado: "SI", apellido: "MUÑOZ MOSQUERA", cat: 1 },
+        { grupo: "TIRO", grado: "IT", apellido: "CASTAKNEDA PEREZ", cat: 1 },
+        { grupo: "TIRO", grado: "SI", apellido: "MUNOZ MOSQUERA", cat: 1 },
         { grupo: "TIRO", grado: "SI", apellido: "TORRES ARNEDO", cat: 1 },
-        { grupo: "TIRO", antiguedad: 12, grado: "SI", apellido: "OTALORA GRAJALES", cat: 1 },
+        { grupo: "TIRO", grado: "SI", apellido: "OTALORA GRAJALES", cat: 1 },
         { grupo: "TIRO", grado: "SI", apellido: "MAHECHA RAMIREZ", cat: 1 },
-        { grupo: "TIRO", grado: "PT", apellido: "ESPINEL MUÑOZ", cat: 2 },
+        { grupo: "TIRO", grado: "PT", apellido: "ESPINEL MUNOZ", cat: 2 },
         { grupo: "TIRO", grado: "PT", apellido: "MURILLO RUIZ", cat: 2 }
     ];
 
@@ -448,7 +447,7 @@
         
         const miGente = DB.filter(p => p.grupo === grupoActivo);
 
-        miGente.forEach((persona, index) => {
+        miGente.forEach((persona) => {
             tabla.innerHTML += `
                 <tr>
                     <td><strong>${persona.grado}</strong></td>
@@ -459,6 +458,7 @@
                             <option value="Laborando">Laborando</option>
                             <option value="Servicios">Servicios</option>
                             <option value="Franquicia">Franquicia</option>
+                            <option value="Excusa Total">Excusa Total</option>
                             <option value="Permisos Especiales">Permisos Especiales</option>
                             <option value="Vacaciones">Vacaciones</option>
                             <option value="Hospitalizado">Hospitalizado</option>
@@ -478,16 +478,15 @@
         const actividades = document.getElementById('actividades-texto').value || "Sin novedades en actividades.";
         const lema = document.getElementById('lema-grupo').value;
 
-        // Estructura limpia de 4 niveles
         let fEfe = [0, 0, 0, 0];
         let conteos = {
             "Formación": [0,0,0,0], "Laborando": [0,0,0,0], "Servicios": [0,0,0,0],
-            "Franquicia": [0,0,0,0], "Permisos Especiales": [0,0,0,0], "Vacaciones": [0,0,0,0],
+            "Franquicia": [0,0,0,0], "Excusa Total": [0,0,0,0], "Permisos Especiales": [0,0,0,0], "Vacaciones": [0,0,0,0],
             "Hospitalizado": [0,0,0,0], "Incapacidad Parcial": [0,0,0,0], "Comisión Servicio": [0,0,0,0], "Comisión Estudio": [0,0,0,0]
         };
 
         let listasNombres = {
-            "Formación": [], "Laborando": [], "Servicios": [], "Franquicia": [],
+            "Formación": [], "Laborando": [], "Servicios": [], "Franquicia": [], "Excusa Total": [],
             "Permisos Especiales": [], "Vacaciones": [], "Hospitalizado": [],
             "Incapacidad Parcial": [], "Comisión Servicio": [], "Comisión Estudio": []
         };
@@ -503,7 +502,7 @@
             listasNombres[novedad].push(nombreCompleto);
         });
 
-        // Cálculo exacto de Novedades Disponibles (Suma de todo lo que NO es Formación, Laborando o Servicios)
+        // Sumar novedades específicas (Todo lo que no sea Formación, Laborando o Servicios)
         let fNov = [0,0,0,0];
         for(let n in conteos) {
             if(n !== "Formación" && n !== "Laborando" && n !== "Servicios") {
@@ -511,7 +510,6 @@
             }
         }
 
-        // Formato exacto requerido: 0-0-0-0= 0
         const fmt = (a) => `${a[0]}-${a[1]}-${a[2]}-${a[3]}= ${a.reduce((x,y)=>x+y,0)}`;
         const impLista = (arr) => arr.length > 0 ? arr.map(n => `  ${n}`).join('\n') : "  Ninguno";
 
@@ -540,6 +538,11 @@
         txt += `*FRANQUICIA*\n${fmt(conteos["Franquicia"])}\n`;
         txt += `  *Grado* *Apellido*\n`;
         txt += `${impLista(listasNombres["Franquicia"])}\n\n`;
+
+        // INCLUSIÓN: Sección de "EXCUSA TOTAL" en el cuerpo
+        txt += `*EXCUSA TOTAL*\n${fmt(conteos["Excusa Total"])}\n`;
+        txt += `  *Grado* *Apellido*\n`;
+        txt += `${impLista(listasNombres["Excusa Total"])}\n\n`;
         
         txt += `*PERMISOS ESPECIALES*\n${fmt(conteos["Permisos Especiales"])}\n`;
         txt += `  *Grado* *Apellido*\n`;
@@ -566,7 +569,6 @@
         txt += `${impLista(listasNombres["Comisión Estudio"])}\n`;
         txt += `...……………………….............\n\n`;
 
-        // SECCIÓN FINAL SOLICITADA TOTALMENTE DINÁMICA CON LOS CUATRO CEROS CORREGIDOS
         txt += `Fuerza Efe: ${fmt(fEfe)}\n`;
         txt += `Fuerza Dis: ${fmt(fEfe)}\n`;
         txt += `Novedades ${fmt(fNov)}\n`;
@@ -577,6 +579,7 @@
         txt += `Comisión  Ser : ${fmt(conteos["Comisión Servicio"])}\n`;
         txt += `Vacaciones : ${fmt(conteos["Vacaciones"])}\n`;
         txt += `Franquicia : ${fmt(conteos["Franquicia"])}\n`;
+        txt += `Excusa Total : ${fmt(conteos["Excusa Total"])}\n`; // AGREGADO AL RESUMEN FINAL
         txt += `Hospitalizado ${fmt(conteos["Hospitalizado"])}\n`;
         txt += `Incapacidad: ${fmt(conteos["Incapacidad Parcial"])}\n`;
         txt += `Permisos Esp :${fmt(conteos["Permisos Especiales"])}\n\n`;
@@ -590,7 +593,7 @@
         const elTexto = document.getElementById('texto-reporte-final').innerText;
         navigator.clipboard.writeText(elTexto).then(() => {
             alert("¡Reporte copiado con éxito!");
-        }).catch(err => {
+        }).catch(() => {
             alert("Error al copiar automáticamente.");
         });
     }
@@ -617,12 +620,12 @@
     function agregarPersonal() {
         const grado = document.getElementById('add-grado').value.trim().toUpperCase();
         const apellido = document.getElementById('add-apellido').value.trim().toUpperCase();
-        const grupo = document.getElementById('add-grupo').value;
+        const group = document.getElementById('add-grupo').value;
         const cat = parseInt(document.getElementById('add-categoria').value);
 
         if (!grado || !apellido) return;
 
-        DB.push({ grupo, grado, apellido, cat });
+        DB.push({ grupo: group, grado, apellido, cat });
         calcularConsolidado();
         renderAdmin();
 
