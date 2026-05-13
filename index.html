@@ -13,6 +13,7 @@
             --borde: #3a506b;
             --exito: #06d6a0;
             --alerta: #ef476f;
+            --gris-txt: #94a3b8;
         }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -65,7 +66,7 @@
             margin-bottom: 5px;
             font-size: 13px;
             font-weight: bold;
-            color: #94a3b8;
+            color: var(--gris-txt);
         }
         input, select, textarea {
             width: 100%;
@@ -94,9 +95,7 @@
             font-size: 14px;
             transition: 0.2s;
         }
-        button:hover {
-            opacity: 0.9;
-        }
+        button:hover { opacity: 0.9; }
         .tabla-personal {
             width: 100%;
             border-collapse: collapse;
@@ -142,6 +141,24 @@
             margin-top: -5px;
             font-size: 12px;
         }
+        .cuadros-resumen {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .tarjeta-resumen {
+            background: var(--bg-principal);
+            border: 1px solid var(--borde);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .tarjeta-resumen div {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--exito);
+        }
     </style>
 </head>
 <body>
@@ -153,7 +170,7 @@
 
     <div id="pantalla-login" class="seccion">
         <h3>Autenticación de Seguridad</h3>
-        <p style="font-size: 13px; color:#94a3b8;">Seleccione su rol o unidad e ingrese el PIN asignado para ingresar.</p>
+        <p style="font-size: 13px; color:var(--gris-txt);">Seleccione su rol o unidad e ingrese el PIN asignado para ingresar.</p>
         <div class="campo-grupo">
             <div>
                 <label>Grupo / Rol:</label>
@@ -166,7 +183,7 @@
             </div>
             <div>
                 <label>PIN de Acceso (4 dígitos):</label>
-                <input type="password" id="login-pin" maxlength="6" placeholder="****" inputmode="numeric">
+                <input type="password" id="login-pin" placeholder="****">
             </div>
         </div>
         <button onclick="verificarAcceso()">Ingresar al Sistema</button>
@@ -205,7 +222,7 @@
             </div>
         </div>
 
-        <h3 style="margin-top: 25px;">Personal bajo su mando</h3>
+        <h3 style="margin-top: 25px;">Personal bajo su mando (Incluye Comandantes)</h3>
         <table class="tabla-personal">
             <thead>
                 <tr>
@@ -231,7 +248,29 @@
         <button class="btn-logout" onclick="salir()">Salir</button>
         <h3>Panel Administrador General - Wilson Rojas</h3>
         
-        <p style="font-size:13px; color:#94a3b8;">Aquí puedes dar de alta nuevos funcionarios para las bases de los jefes.</p>
+        <div style="background: rgba(6, 214, 160, 0.05); padding: 15px; border-radius: 8px; border: 1px solid var(--exito); margin-bottom: 25px;">
+            <h4 style="margin: 0; color: var(--exito); text-transform: uppercase; font-size: 14px;">Consolidado General (Tres Grupos)</h4>
+            <div class="cuadros-resumen">
+                <div class="tarjeta-resumen">
+                    <label>Fuerza Efectiva</label>
+                    <div id="resumen-efe">0</div>
+                </div>
+                <div class="tarjeta-resumen">
+                    <label>Granaderos</label>
+                    <div id="resumen-granaderos" style="color: var(--verde-tactico);">0</div>
+                </div>
+                <div class="tarjeta-resumen">
+                    <label>Grupo COR</label>
+                    <div id="resumen-cor" style="color: var(--verde-tactico);">0</div>
+                </div>
+                <div class="tarjeta-resumen">
+                    <label>Tiro Policial</label>
+                    <div id="resumen-tiro" style="color: var(--verde-tactico);">0</div>
+                </div>
+            </div>
+        </div>
+
+        <p style="font-size:13px; color:var(--gris-txt);">Aquí puedes dar de alta nuevos funcionarios para las bases de los jefes.</p>
         
         <div class="campo-grupo">
             <div>
@@ -282,13 +321,6 @@
 </div>
 
 <script>
-    // Configurar por defecto la fecha de mañana en el selector
-    const fechaInput = document.getElementById('fecha-parte');
-    const proximoDia = new Date();
-    proximoDia.setDate(proximoDia.getDate() + 1);
-    fechaInput.value = proximoDia.toISOString().split('T')[0];
-
-    // BASE DE DATOS ESTRUCTURADA DESDE LAS IMÁGENES ENVIADAS
     const PIN_CONFIG = {
         "GRANADEROS": { pin: "2026", jefe: "IJ FERIA FERIA" },
         "COR": { pin: "2025", jefe: "IJ SANABRIA TORRALBA" },
@@ -296,8 +328,9 @@
         "ADMIN": { pin: "6098", jefe: "WILSON ROJAS" }
     };
 
-    let personalPredeterminado = [
-        // GRUPO GRANADEROS (Categoría 2 = Nivel Ejecutivo, Categorías se calculan según Grado institucional)
+    let DB = [
+        // GRUPO GRANADEROS
+        { grupo: "GRANADEROS", grado: "IJ", apellido: "FERIA FERIA", cat: 2 },
         { grupo: "GRANADEROS", grado: "IT", apellido: "CAMACHO GOMEZ", cat: 2 },
         { grupo: "GRANADEROS", grado: "SI", apellido: "DEVIA VARGAS", cat: 2 },
         { grupo: "GRANADEROS", grado: "SI", apellido: "MELO ACHURY", cat: 2 },
@@ -322,11 +355,12 @@
         { grupo: "GRANADEROS", grado: "PT", apellido: "FRANCO SILVA", cat: 2 },
 
         // GRUPO COR
+        { grupo: "COR", grado: "IJ", apellido: "SANABRIA TORRALBA", cat: 2 },
         { grupo: "COR", grado: "IJ", apellido: "LAVERDE ABREGO", cat: 2 },
         { grupo: "COR", grado: "IT", apellido: "AVENDAÑO FIGUEROA", cat: 2 },
         { grupo: "COR", grado: "SI", apellido: "VARGAS ALDANA", cat: 2 },
         { grupo: "COR", grado: "SI", apellido: "CRUZ SUAREZ", cat: 2 },
-        { group: "COR", grado: "SI", apellido: "ACEVEDO RODRIGUEZ", cat: 2 },
+        { grupo: "COR", grado: "SI", apellido: "ACEVEDO RODRIGUEZ", cat: 2 },
         { grupo: "COR", grado: "SI", apellido: "SUAREZ GARCIA", cat: 2 },
         { grupo: "COR", grado: "SI", apellido: "FORERO RAMIREZ", cat: 2 },
         { grupo: "COR", grado: "SI", apellido: "RONDON CANIZALES", cat: 2 },
@@ -339,6 +373,8 @@
         { grupo: "COR", grado: "PT", apellido: "ZAPATA VELEZ", cat: 2 },
 
         // GRUPO TIRO POLICIAL
+        { grupo: "TIRO", grado: "SC", apellido: "RUEDA BERNAL", cat: 1 },
+        { grupo: "TIRO", grado: "IJ", apellido: "QUINTERO MANJARREZ", cat: 2 },
         { grupo: "TIRO", grado: "IJ", apellido: "ROBAYO MENDEZ", cat: 2 },
         { grupo: "TIRO", grado: "IJ", apellido: "ROMERO SANCHEZ", cat: 2 },
         { grupo: "TIRO", grado: "IT", apellido: "LOPEZ TANGARIFE", cat: 2 },
@@ -354,8 +390,17 @@
         { grupo: "TIRO", grado: "PT", apellido: "MURILLO RUIZ", cat: 2 }
     ];
 
-    let DB = JSON.parse(localStorage.getItem('db_partes_2026')) || personalPredeterminado;
     let grupoActivo = "";
+
+    // Poner fecha de mañana automáticamente al iniciar
+    window.onload = function() {
+        const fInput = document.getElementById('fecha-parte');
+        if(fInput) {
+            const prox = new Date();
+            prox.setDate(prox.getDate() + 1);
+            fInput.value = prox.toISOString().split('T')[0];
+        }
+    }
 
     function verificarAcceso() {
         const grupo = document.getElementById('login-grupo').value;
@@ -376,6 +421,7 @@
 
             if (grupo === 'ADMIN') {
                 document.getElementById('pantalla-admin').classList.remove('oculto');
+                calcularConsolidado();
                 renderAdmin();
             } else {
                 document.getElementById('pantalla-jefe').classList.remove('oculto');
@@ -388,11 +434,17 @@
         }
     }
 
+    function calcularConsolidado() {
+        document.getElementById('resumen-efe').innerText = DB.length;
+        document.getElementById('resumen-granaderos').innerText = DB.filter(p => p.grupo === 'GRANADEROS').length;
+        document.getElementById('resumen-cor').innerText = DB.filter(p => p.grupo === 'COR').length;
+        document.getElementById('resumen-tiro').innerText = DB.filter(p => p.grupo === 'TIRO').length;
+    }
+
     function renderJefe() {
         const tabla = document.getElementById('tabla-personal-jefe');
         tabla.innerHTML = "";
         
-        // Filtrar solo la gente adscrita a este grupo operativo
         const miGente = DB.filter(p => p.grupo === grupoActivo);
 
         miGente.forEach((persona, index) => {
@@ -401,7 +453,7 @@
                     <td><strong>${persona.grado}</strong></td>
                     <td>${persona.apellido}</td>
                     <td>
-                        <select id="nov-${index}" data-cat="${persona.cat}" data-nom="${persona.grado} ${persona.apellido}">
+                        <select class="novedad-select" data-cat="${persona.cat}" data-nom="${persona.grado} ${persona.apellido}">
                             <option value="Formación">Formación</option>
                             <option value="Laborando">Laborando</option>
                             <option value="Servicios">Servicios</option>
@@ -420,13 +472,11 @@
     }
 
     function generarReporteTexto() {
-        const miGente = DB.filter(p => p.grupo === grupoActivo);
         const fecha = document.getElementById('fecha-parte').value;
         const horaF = document.getElementById('hora-formacion').value;
         const actividades = document.getElementById('actividades-texto').value || "Sin novedades en actividades.";
         const lema = document.getElementById('lema-grupo').value;
 
-        // Estructura [OF, SU, NE, AG/AUX]
         let fEfe = [0, 0, 0, 0];
         let conteos = {
             "Formación": [0,0,0,0], "Laborando": [0,0,0,0], "Servicios": [0,0,0,0],
@@ -440,8 +490,8 @@
             "Incapacidad Parcial": [], "Comisión Servicio": [], "Comisión Estudio": []
         };
 
-        miGente.forEach((persona, i) => {
-            const elSelect = document.getElementById(`nov-${i}`);
+        const losSelects = document.querySelectorAll('.novedad-select');
+        losSelects.forEach((elSelect) => {
             const novedad = elSelect.value;
             const cat = parseInt(elSelect.dataset.cat);
             const nombreCompleto = elSelect.dataset.nom;
@@ -451,7 +501,6 @@
             listasNombres[novedad].push(nombreCompleto);
         });
 
-        // Novedades totales (todo lo que altere la disponibilidad operativa directa: Franquicias, Vacaciones, Permisos, etc.)
         let fNov = [0,0,0,0];
         for(let n in conteos) {
             if(n !== "Formación" && n !== "Laborando" && n !== "Servicios") {
@@ -462,7 +511,6 @@
         const fmt = (a) => `${a[0]}-${a[1]}-${a[2]}-${a[3]}= ${a.reduce((x,y)=>x+y,0)}`;
         const impLista = (arr) => arr.length > 0 ? arr.map(n => `  ${n}`).join('\n') : "  Ninguno";
 
-        // ARMADO DE LA PLANTILLA DIARIA SOLICITADA
         let txt = `*GRUPO INSTRUCTORES “${grupoActivo === 'TIRO' ? 'TIRO POLICIAL' : grupoActivo}”*\n\n`;
         txt += `Dios y patria mi Mayor, me permito enviar actividades para el día de mañana “${fecha}” por parte del grupo así:\n\n`;
         txt += `Fuerza Efe: ${fmt(fEfe)}\n`;
@@ -533,27 +581,27 @@
     function copiarAlPortapapeles() {
         const elTexto = document.getElementById('texto-reporte-final').innerText;
         navigator.clipboard.writeText(elTexto).then(() => {
-            alert("¡Reporte copiado! Abre WhatsApp y dale 'Pegar' en el grupo.");
+            alert("¡Reporte copiado!");
         }).catch(err => {
-            alert("Error al copiar automáticamente. Selecciónalo manualmente.");
+            alert("Error al copiar automáticamente.");
         });
     }
 
-    // FUNCIONES DEL ADMINISTRADOR (WILSON ROJAS)
     function renderAdmin() {
         const tbody = document.getElementById('tabla-admin-gestion');
-        tbody.innerHTML = "";
-        
-        DB.forEach((persona, index) => {
-            tbody.innerHTML += `
-                <tr>
-                    <td><small>${persona.grupo}</small></td>
-                    <td><strong>${persona.grado}</strong></td>
-                    <td>${persona.apellido}</td>
-                    <td><button onclick="eliminarPersonal(${index})" style="background-color:var(--alerta); color:white; padding:4px 8px; font-size:12px; width:auto; margin:0;">Eliminar</button></td>
-                </tr>
-            `;
-        });
+        if(tbody) {
+            tbody.innerHTML = "";
+            DB.forEach((persona, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><small>${persona.grupo === 'TIRO' ? 'TIRO POLICIAL' : persona.grupo}</small></td>
+                        <td><strong>${persona.grado}</strong></td>
+                        <td>${persona.apellido}</td>
+                        <td><button onclick="eliminarPersonal(${index})" style="background-color:var(--alerta); color:white; padding:4px 8px; font-size:12px; width:auto; margin:0;">Eliminar</button></td>
+                    </tr>
+                `;
+            });
+        }
     }
 
     function agregarPersonal() {
@@ -562,26 +610,20 @@
         const grupo = document.getElementById('add-grupo').value;
         const cat = parseInt(document.getElementById('add-categoria').value);
 
-        if (!grado || !apellido) {
-            alert("Complete el Grado y los Apellidos.");
-            return;
-        }
+        if (!grado || !apellido) return;
 
         DB.push({ grupo, grado, apellido, cat });
-        localStorage.setItem('db_partes_2026', JSON.stringify(DB));
+        calcularConsolidado();
         renderAdmin();
 
         document.getElementById('add-grado').value = "";
         document.getElementById('add-apellido').value = "";
-        alert("Funcionario registrado.");
     }
 
     function eliminarPersonal(index) {
-        if (confirm("¿Desea eliminar a este funcionario de la base de datos?")) {
-            DB.splice(index, 1);
-            localStorage.setItem('db_partes_2026', JSON.stringify(DB));
-            renderAdmin();
-        }
+        DB.splice(index, 1);
+        calcularConsolidado();
+        renderAdmin();
     }
 
     function salir() {
