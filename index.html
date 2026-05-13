@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Digital de Partes y Novedades</title>
+    <style>
+        :root {
+            --bg-principal: #0b1329;
+            --bg-tarjeta: #1c2541;
+            --verde-tactico: #00b4d8;
+            --texto-claro: #f8fafc;
+            --borde: #3a506b;
+            --exito: #06d6a0;
+            --alerta: #ef476f;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            margin: 0;
+            padding: 15px;
+        }
+        .contenedor {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        .titulo-app {
+            text-align: center;
+            color: var(--texto-claro);
+            border-bottom: 2px solid var(--verde-tactico);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+        .seccion {
+            background-color: var(--bg-tarjeta);
+            border: 1px solid var(--borde);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        h3 {
+            color: var(--verde-tactico);
+            margin-top: 0;
+            text-transform: uppercase;
+            border-left: 4px solid var(--verde-tactico);
+            padding-left: 10px;
+            font-size: 16px;
+        }
+        .campo-grupo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        @media(max-width: 500px) {
+            .campo-grupo { grid-template-columns: 1fr; }
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #94a3b8;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--bg-principal);
+            border: 1px solid var(--borde);
+            color: var(--texto-claro);
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--verde-tactico);
+            outline: none;
+        }
+        button {
+            background-color: var(--verde-tactico);
+            color: var(--bg-principal);
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .tabla-personal {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .tabla-personal th, .tabla-personal td {
+            border: 1px solid var(--borde);
+            padding: 10px;
+            text-align: left;
+        }
+        .tabla-personal th {
+            background-color: rgba(11, 19, 41, 0.6);
+            color: var(--verde-tactico);
+        }
+        .resultado-reporte {
+            background-color: #020617;
+            border-left: 4px solid var(--exito);
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            padding: 15px;
+            border-radius: 5px;
+            color: #adfa1d;
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .oculto { display: none; }
+        .info-jefe {
+            background-color: rgba(0, 180, 216, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            border: 1px dashed var(--verde-tactico);
+        }
+        .btn-logout {
+            background-color: var(--alerta);
+            color: white;
+            padding: 8px 15px;
+            width: auto;
+            float: right;
+            margin-top: -5px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor">
+    <div class="titulo-app">
+        <strong>Control de Partes y Novedades del Personal</strong>
+    </div>
+
+    <div id="pantalla-login" class="seccion">
+        <h3>Autenticación de Seguridad</h3>
+        <p style="font-size: 13px; color:#94a3b8;">Seleccione su rol o unidad e ingrese el PIN asignado para ingresar.</p>
+        <div class="campo-grupo">
+            <div>
+                <label>Grupo / Rol:</label>
+                <select id="login-grupo">
+                    <option value="GRANADEROS">GRUPO GRANADEROS</option>
+                    <option value="COR">GRUPO COR</option>
+                    <option value="TIRO">GRUPO TIRO POLICIAL</option>
+                    <option value="ADMIN">ADMINISTRADOR GENERAL</option>
+                </select>
+            </div>
+            <div>
+                <label>PIN de Acceso (4 dígitos):</label>
+                <input type="password" id="login-pin" maxlength="6" placeholder="****" inputmode="numeric">
+            </div>
+        </div>
+        <button onclick="verificarAcceso()">Ingresar al Sistema</button>
+    </div>
+
+    <div id="pantalla-jefe" class="seccion oculto">
+        <button class="btn-logout" onclick="salir()">Salir</button>
+        <h3>Panel Operativo - <span id="nombre-grupo-titulo"></span></h3>
+        
+        <div class="info-jefe">
+            <strong>Comandante de Grupo:</strong> <span id="nombre-jefe-txt"></span>
+        </div>
+
+        <div class="campo-grupo">
+            <div>
+                <label>Fecha para el Parte:</label>
+                <input type="date" id="fecha-parte">
+            </div>
+            <div>
+                <label>Hora de Formación:</label>
+                <input type="text" id="hora-formacion" value="06:00">
+            </div>
+        </div>
+
+        <div class="campo-grupo">
+            <div style="grid-column: span 2;">
+                <label>Actividades para el día de mañana:</label>
+                <textarea id="actividades-texto" rows="2" placeholder="Ej: Instrucción teórica y práctica en el terreno..."></textarea>
+            </div>
+        </div>
+        
+        <div class="campo-grupo">
+            <div style="grid-column: span 2;">
+                <label>Lema de la Unidad:</label>
+                <input type="text" id="lema-grupo" value="DIOS Y PATRIA">
+            </div>
+        </div>
+
+        <h3 style="margin-top: 25px;">Personal bajo su mando</h3>
+        <table class="tabla-personal">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Grado</th>
+                    <th>Apellidos y Nombres</th>
+                    <th style="width: 40%;">Situación / Novedad</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-personal-jefe">
+                </tbody>
+        </table>
+
+        <button onclick="generarReporteTexto()" style="margin-top: 20px; background-color: var(--exito); color: #0b1329;">Generar Reporte de Fuerza</button>
+
+        <div id="contenedor-reporte" class="oculto" style="margin-top: 25px;">
+            <h3>Reporte Generado de Forma Exitosa</h3>
+            <button onclick="copiarAlPortapapeles()" style="background-color: #00b4d8; color: white; margin-bottom: 10px;">Copiar Mensaje para WhatsApp</button>
+            <div class="resultado-reporte" id="texto-reporte-final"></div>
+        </div>
+    </div>
+
+    <div id="pantalla-admin" class="seccion oculto">
+        <button class="btn-logout" onclick="salir()">Salir</button>
+        <h3>Panel Administrador General - Wilson Rojas</h3>
+        
+        <p style="font-size:13px; color:#94a3b8;">Aquí puedes dar de alta nuevos funcionarios para las bases de los jefes.</p>
+        
+        <div class="campo-grupo">
+            <div>
+                <label>Grado:</label>
+                <input type="text" id="add-grado" placeholder="Ej: IJ, IT, SI, PT">
+            </div>
+            <div>
+                <label>Apellidos y Nombres:</label>
+                <input type="text" id="add-apellido" placeholder="Ej: CAMACHO GOMEZ">
+            </div>
+        </div>
+        
+        <div class="campo-grupo">
+            <div>
+                <label>Asignar al Grupo:</label>
+                <select id="add-grupo">
+                    <option value="GRANADEROS">GRUPO GRANADEROS</option>
+                    <option value="COR">GRUPO COR</option>
+                    <option value="TIRO">GRUPO TIRO POLICIAL</option>
+                </select>
+            </div>
+            <div>
+                <label>Categoría Estructural:</label>
+                <select id="add-categoria">
+                    <option value="0">Oficiales (OF)</option>
+                    <option value="1">Suboficiales (SU)</option>
+                    <option value="2">Nivel Ejecutivo (NE)</option>
+                    <option value="3">Agentes / Auxiliares (AG/AUX)</option>
+                </select>
+            </div>
+        </div>
+        <button onclick="agregarPersonal()" style="background-color: var(--exito); color:#0b1329;">Agregar a la Base de Datos</button>
+
+        <h3 style="margin-top:30px;">Inventario General de Personal</h3>
+        <table class="tabla-personal">
+            <thead>
+                <tr>
+                    <th>Grupo</th>
+                    <th>Grado</th>
+                    <th>Apellidos y Nombres</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-admin-gestion">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Configurar por defecto la fecha de mañana en el selector
+    const fechaInput = document.getElementById('fecha-parte');
+    const proximoDia = new Date();
+    proximoDia.setDate(proximoDia.getDate() + 1);
+    fechaInput.value = proximoDia.toISOString().split('T')[0];
+
+    // BASE DE DATOS ESTRUCTURADA DESDE LAS IMÁGENES ENVIADAS
+    const PIN_CONFIG = {
+        "GRANADEROS": { pin: "2026", jefe: "IJ FERIA FERIA" },
+        "COR": { pin: "2025", jefe: "IJ SANABRIA TORRALBA" },
+        "TIRO": { pin: ["2024", "2023"], jefe: "SC RUEDA BERNAL / IJ QUINTERO MANJARREZ" },
+        "ADMIN": { pin: "6098", jefe: "WILSON ROJAS" }
+    };
+
+    let personalPredeterminado = [
+        // GRUPO GRANADEROS (Categoría 2 = Nivel Ejecutivo, Categorías se calculan según Grado institucional)
+        { grupo: "GRANADEROS", grado: "IT", apellido: "CAMACHO GOMEZ", cat: 2 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "DEVIA VARGAS", cat: 2 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "MELO ACHURY", cat: 2 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "AGUIRRE MOLINA", cat: 2 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "FERIA RODRIGUEZ", cat: 2 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "MOREANO ARCOS", cat: 2 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "RAMIREZ SOTO", cat: 2 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "ARCINIEGAS MENDEZ", cat: 2 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "VELASQUEZ QUINTERO", cat: 2 },
+        { grupo: "GRANADEROS", grado: "SI", apellido: "TRUJILLO CUELLAR", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "GONZALEZ RESTREPO", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "CONTRERAS BARRAGAN", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "TRIANA MORENO", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "MORALES BENAVIDES", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "MENDOZA BUSTAMANTE", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "DIAZ CIFUENTES", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "LAGUNA SANTOS", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "ARDILA NIETO", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "BRIÑEZ MONROY", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "MOLINA RESTREPO", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "CHAVARRIA JARAMILLO", cat: 2 },
+        { grupo: "GRANADEROS", grado: "PT", apellido: "FRANCO SILVA", cat: 2 },
+
+        // GRUPO COR
+        { grupo: "COR", grado: "IJ", apellido: "LAVERDE ABREGO", cat: 2 },
+        { grupo: "COR", grado: "IT", apellido: "AVENDAÑO FIGUEROA", cat: 2 },
+        { grupo: "COR", grado: "SI", apellido: "VARGAS ALDANA", cat: 2 },
+        { grupo: "COR", grado: "SI", apellido: "CRUZ SUAREZ", cat: 2 },
+        { group: "COR", grado: "SI", apellido: "ACEVEDO RODRIGUEZ", cat: 2 },
+        { grupo: "COR", grado: "SI", apellido: "SUAREZ GARCIA", cat: 2 },
+        { grupo: "COR", grado: "SI", apellido: "FORERO RAMIREZ", cat: 2 },
+        { grupo: "COR", grado: "SI", apellido: "RONDON CANIZALES", cat: 2 },
+        { grupo: "COR", grado: "SI", apellido: "BEDOYA GIRALDO", cat: 2 },
+        { grupo: "COR", grado: "SI", apellido: "MONTENEGRO ILES", cat: 2 },
+        { grupo: "COR", grado: "PT", apellido: "RODRIGUEZ FLOREZ", cat: 2 },
+        { grupo: "COR", grado: "PT", apellido: "PEREZ CRESPO", cat: 2 },
+        { grupo: "COR", grado: "PT", apellido: "BERMUDEZ LOPEZ", cat: 2 },
+        { grupo: "COR", grado: "PT", apellido: "MARTINEZ VALENCIA", cat: 2 },
+        { grupo: "COR", grado: "PT", apellido: "ZAPATA VELEZ", cat: 2 },
+
+        // GRUPO TIRO POLICIAL
+        { grupo: "TIRO", grado: "IJ", apellido: "ROBAYO MENDEZ", cat: 2 },
+        { grupo: "TIRO", grado: "IJ", apellido: "ROMERO SANCHEZ", cat: 2 },
+        { grupo: "TIRO", grado: "IT", apellido: "LOPEZ TANGARIFE", cat: 2 },
+        { grupo: "TIRO", grado: "IT", apellido: "HERNANDEZ CASTRO", cat: 2 },
+        { grupo: "TIRO", grado: "IT", apellido: "ARCE TAPASCO", cat: 2 },
+        { grupo: "TIRO", grado: "IT", apellido: "ROJAS OCHOA", cat: 2 },
+        { grupo: "TIRO", grado: "IT", apellido: "CASTAÑEDA PEREZ", cat: 2 },
+        { grupo: "TIRO", grado: "SI", apellido: "MUÑOZ MOSQUERA", cat: 2 },
+        { grupo: "TIRO", grado: "SI", apellido: "TORRES ARNEDO", cat: 2 },
+        { grupo: "TIRO", grado: "SI", apellido: "OTALORA GRAJALES", cat: 2 },
+        { grupo: "TIRO", grado: "SI", apellido: "MAHECHA RAMIREZ", cat: 2 },
+        { grupo: "TIRO", grado: "PT", apellido: "ESPINEL MUÑOZ", cat: 2 },
+        { grupo: "TIRO", grado: "PT", apellido: "MURILLO RUIZ", cat: 2 }
+    ];
+
+    let DB = JSON.parse(localStorage.getItem('db_partes_2026')) || personalPredeterminado;
+    let grupoActivo = "";
+
+    function verificarAcceso() {
+        const grupo = document.getElementById('login-grupo').value;
+        const pinIn = document.getElementById('login-pin').value.trim();
+        const conf = PIN_CONFIG[grupo];
+
+        let accesoValido = false;
+        if (Array.isArray(conf.pin)) {
+            accesoValido = conf.pin.includes(pinIn);
+        } else {
+            accesoValido = (conf.pin === pinIn);
+        }
+
+        if (accesoValido) {
+            grupoActivo = grupo;
+            document.getElementById('pantalla-login').classList.add('oculto');
+            document.getElementById('login-pin').value = "";
+
+            if (grupo === 'ADMIN') {
+                document.getElementById('pantalla-admin').classList.remove('oculto');
+                renderAdmin();
+            } else {
+                document.getElementById('pantalla-jefe').classList.remove('oculto');
+                document.getElementById('nombre-grupo-titulo').innerText = "GRUPO " + (grupo === 'TIRO' ? 'TIRO POLICIAL' : grupo);
+                document.getElementById('nombre-jefe-txt').innerText = conf.jefe;
+                renderJefe();
+            }
+        } else {
+            alert("¡PIN incorrecto para la unidad seleccionada!");
+        }
+    }
+
+    function renderJefe() {
+        const tabla = document.getElementById('tabla-personal-jefe');
+        tabla.innerHTML = "";
+        
+        // Filtrar solo la gente adscrita a este grupo operativo
+        const miGente = DB.filter(p => p.grupo === grupoActivo);
+
+        miGente.forEach((persona, index) => {
+            tabla.innerHTML += `
+                <tr>
+                    <td><strong>${persona.grado}</strong></td>
+                    <td>${persona.apellido}</td>
+                    <td>
+                        <select id="nov-${index}" data-cat="${persona.cat}" data-nom="${persona.grado} ${persona.apellido}">
+                            <option value="Formación">Formación</option>
+                            <option value="Laborando">Laborando</option>
+                            <option value="Servicios">Servicios</option>
+                            <option value="Franquicia">Franquicia</option>
+                            <option value="Permisos Especiales">Permisos Especiales</option>
+                            <option value="Vacaciones">Vacaciones</option>
+                            <option value="Hospitalizado">Hospitalizado</option>
+                            <option value="Incapacidad Parcial">Incapacidad Parcial</option>
+                            <option value="Comisión Servicio">Comisión Servicio</option>
+                            <option value="Comisión Estudio">Comisión Estudio</option>
+                        </select>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function generarReporteTexto() {
+        const miGente = DB.filter(p => p.grupo === grupoActivo);
+        const fecha = document.getElementById('fecha-parte').value;
+        const horaF = document.getElementById('hora-formacion').value;
+        const actividades = document.getElementById('actividades-texto').value || "Sin novedades en actividades.";
+        const lema = document.getElementById('lema-grupo').value;
+
+        // Estructura [OF, SU, NE, AG/AUX]
+        let fEfe = [0, 0, 0, 0];
+        let conteos = {
+            "Formación": [0,0,0,0], "Laborando": [0,0,0,0], "Servicios": [0,0,0,0],
+            "Franquicia": [0,0,0,0], "Permisos Especiales": [0,0,0,0], "Vacaciones": [0,0,0,0],
+            "Hospitalizado": [0,0,0,0], "Incapacidad Parcial": [0,0,0,0], "Comisión Servicio": [0,0,0,0], "Comisión Estudio": [0,0,0,0]
+        };
+
+        let listasNombres = {
+            "Formación": [], "Laborando": [], "Servicios": [], "Franquicia": [],
+            "Permisos Especiales": [], "Vacaciones": [], "Hospitalizado": [],
+            "Incapacidad Parcial": [], "Comisión Servicio": [], "Comisión Estudio": []
+        };
+
+        miGente.forEach((persona, i) => {
+            const elSelect = document.getElementById(`nov-${i}`);
+            const novedad = elSelect.value;
+            const cat = parseInt(elSelect.dataset.cat);
+            const nombreCompleto = elSelect.dataset.nom;
+
+            fEfe[cat]++;
+            conteos[novedad][cat]++;
+            listasNombres[novedad].push(nombreCompleto);
+        });
+
+        // Novedades totales (todo lo que altere la disponibilidad operativa directa: Franquicias, Vacaciones, Permisos, etc.)
+        let fNov = [0,0,0,0];
+        for(let n in conteos) {
+            if(n !== "Formación" && n !== "Laborando" && n !== "Servicios") {
+                for(let i=0; i<4; i++) fNov[i] += conteos[n][i];
+            }
+        }
+
+        const fmt = (a) => `${a[0]}-${a[1]}-${a[2]}-${a[3]}= ${a.reduce((x,y)=>x+y,0)}`;
+        const impLista = (arr) => arr.length > 0 ? arr.map(n => `  ${n}`).join('\n') : "  Ninguno";
+
+        // ARMADO DE LA PLANTILLA DIARIA SOLICITADA
+        let txt = `*GRUPO INSTRUCTORES “${grupoActivo === 'TIRO' ? 'TIRO POLICIAL' : grupoActivo}”*\n\n`;
+        txt += `Dios y patria mi Mayor, me permito enviar actividades para el día de mañana “${fecha}” por parte del grupo así:\n\n`;
+        txt += `Fuerza Efe: ${fmt(fEfe)}\n`;
+        txt += `Fuerza Dis: ${fmt(fEfe)}\n`;
+        txt += `Novedades: ${fmt(fNov)}\n`;
+        txt += `.....................\n`;
+        txt += `·  “${horaF}” FORMACION*\n`;
+        txt += `Forman\n${fmt(conteos["Formación"])}\n`;
+        txt += `  *Grado* *Apellido*\n`;
+        txt += `${impLista(listasNombres["Formación"])}\n\n`;
+
+        txt += `*LABORANDO*\n${fmt(conteos["Laborando"])}\n`;
+        txt += `*ACTIVIDADES*\n_${actividades}_\n`;
+        txt += `  *Grado* *Apellido*\n`;
+        txt += `${impLista(listasNombres["Laborando"])}\n\n`;
+
+        txt += `*SERVICIOS*\n${fmt(conteos["Servicios"])}\n`;
+        txt += `  *Grado* *Apellido*\n`;
+        txt += `${impLista(listasNombres["Servicios"])}\n`;
+        txt += `......................................\n`;
+        txt += `*NOVEDADES ESPECIFICAS*\n`;
+        txt += `*FRANQUICIA*\n${fmt(conteos["Franquicia"])}\n\n`;
+        
+        txt += `*PERMISOS ESPECIALES*\n${fmt(conteos["Permisos Especiales"])}\n`;
+        txt += `  *Grado* *Apellido*\n`;
+        txt += `${impLista(listasNombres["Permisos Especiales"])}\n\n`;
+
+        txt += `*Vacaciones*\n${fmt(conteos["Vacaciones"])}\n`;
+        txt += `  *Grado* *Apellido*\n`;
+        txt += `${impLista(listasNombres["Vacaciones"])}\n\n`;
+
+        txt += `*HOSPITALIZADO*\n${fmt(conteos["Hospitalizado"])}\n`;
+        txt += `  *Grado* *Apellido*\n`;
+        txt += `${impLista(listasNombres["Hospitalizado"])}\n`;
+        txt += `..................................\n`;
+        txt += `*INCAPACIDAD PARCIAL*\n${fmt(conteos["Incapacidad Parcial"])}\n`;
+        txt += `  *Grado* *Apellido*\n`;
+        txt += `${impLista(listasNombres["Incapacidad Parcial"])}\n`;
+        txt += `...……………………….............\n`;
+        txt += `*COMISION DEL SERVICIO*\n${fmt(conteos["Comisión Servicio"])}\n`;
+        txt += `  *Grado* *Apellido* *UNIDAD*\n`;
+        txt += `${impLista(listasNombres["Comisión Servicio"])}\n\n`;
+
+        txt += `*COMISION DE ESTUDIO*\n${fmt(conteos["Comisión Estudio"])}\n`;
+        txt += `  *Grado* *Apellido* *UNIDAD*\n`;
+        txt += `${impLista(listasNombres["Comisión Estudio"])}\n`;
+        txt += `...……………………….............\n\n`;
+
+        txt += `Fuerza Efe: ${fmt(fEfe)}\n`;
+        txt += `Fuerza Dis: ${fmt(fEfe)}\n`;
+        txt += `Novedades ${fmt(fNov)}\n`;
+        txt += `Laborando: ${fmt(conteos["Laborando"])}\n`;
+        txt += `Formación: ${fmt(conteos["Formación"])}\n`;
+        txt += `Servicios:   ${fmt(conteos["Servicios"])}\n`;
+        txt += `Comisión Estudio: ${fmt(conteos["Comisión Estudio"])}\n`;
+        txt += `Comisión  Ser : ${fmt(conteos["Comisión Servicio"])}\n`;
+        txt += `Vacaciones : ${fmt(conteos["Vacaciones"])}\n`;
+        txt += `Franquicia : ${fmt(conteos["Franquicia"])}\n`;
+        txt += `Hospitalizado ${fmt(conteos["Hospitalizado"])}\n`;
+        txt += `Incapacidad: ${fmt(conteos["Incapacidad Parcial"])}\n`;
+        txt += `Permisos Esp :${fmt(conteos["Permisos Especiales"])}\n\n`;
+        txt += `*“${lema}”*`;
+
+        document.getElementById('texto-reporte-final').innerText = txt;
+        document.getElementById('contenedor-reporte').classList.remove('oculto');
+    }
+
+    function copiarAlPortapapeles() {
+        const elTexto = document.getElementById('texto-reporte-final').innerText;
+        navigator.clipboard.writeText(elTexto).then(() => {
+            alert("¡Reporte copiado! Abre WhatsApp y dale 'Pegar' en el grupo.");
+        }).catch(err => {
+            alert("Error al copiar automáticamente. Selecciónalo manualmente.");
+        });
+    }
+
+    // FUNCIONES DEL ADMINISTRADOR (WILSON ROJAS)
+    function renderAdmin() {
+        const tbody = document.getElementById('tabla-admin-gestion');
+        tbody.innerHTML = "";
+        
+        DB.forEach((persona, index) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><small>${persona.grupo}</small></td>
+                    <td><strong>${persona.grado}</strong></td>
+                    <td>${persona.apellido}</td>
+                    <td><button onclick="eliminarPersonal(${index})" style="background-color:var(--alerta); color:white; padding:4px 8px; font-size:12px; width:auto; margin:0;">Eliminar</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    function agregarPersonal() {
+        const grado = document.getElementById('add-grado').value.trim().toUpperCase();
+        const apellido = document.getElementById('add-apellido').value.trim().toUpperCase();
+        const grupo = document.getElementById('add-grupo').value;
+        const cat = parseInt(document.getElementById('add-categoria').value);
+
+        if (!grado || !apellido) {
+            alert("Complete el Grado y los Apellidos.");
+            return;
+        }
+
+        DB.push({ grupo, grado, apellido, cat });
+        localStorage.setItem('db_partes_2026', JSON.stringify(DB));
+        renderAdmin();
+
+        document.getElementById('add-grado').value = "";
+        document.getElementById('add-apellido').value = "";
+        alert("Funcionario registrado.");
+    }
+
+    function eliminarPersonal(index) {
+        if (confirm("¿Desea eliminar a este funcionario de la base de datos?")) {
+            DB.splice(index, 1);
+            localStorage.setItem('db_partes_2026', JSON.stringify(DB));
+            renderAdmin();
+        }
+    }
+
+    function salir() {
+        grupoActivo = "";
+        document.getElementById('pantalla-jefe').classList.add('oculto');
+        document.getElementById('pantalla-admin').classList.add('oculto');
+        document.getElementById('contenedor-reporte').classList.add('oculto');
+        document.getElementById('pantalla-login').classList.remove('oculto');
+    }
+</script>
+
+</body>
+</html>
