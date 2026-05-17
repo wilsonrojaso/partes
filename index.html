@@ -14,13 +14,14 @@
             --exito: #06d6a0;
             --alerta: #ef476f;
             --gris-txt: #94a3b8;
+            --advertencia: #f59e0b;
         }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             background-color: var(--bg-principal);
             color: var(--texto-claro);
             margin: 0;
-            padding: 15px;
+            padding: 10px;
         }
         .contenedor {
             max-width: 750px;
@@ -30,18 +31,19 @@
             text-align: center;
             color: var(--texto-claro);
             border-bottom: 2px solid var(--verde-tactico);
-            padding-bottom: 10px;
-            margin-bottom: 25px;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
             text-transform: uppercase;
-            font-size: 20px;
+            font-size: 18px;
             letter-spacing: 1px;
+            line-height: 1.3;
         }
         .seccion {
             background-color: var(--bg-tarjeta);
             border: 1px solid var(--borde);
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         h3 {
@@ -50,33 +52,34 @@
             text-transform: uppercase;
             border-left: 4px solid var(--verde-tactico);
             padding-left: 10px;
-            font-size: 16px;
+            font-size: 15px;
         }
         .campo-grupo {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 12px;
         }
-        @media(max-width: 500px) {
+        @media(max-width: 600px) {
             .campo-grupo { grid-template-columns: 1fr; }
         }
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-size: 13px;
             font-weight: bold;
             color: var(--gris-txt);
         }
         input, select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: var(--bg-principal);
             border: 1px solid var(--borde);
             color: var(--texto-claro);
-            border-radius: 5px;
+            border-radius: 6px;
             box-sizing: border-box;
-            font-size: 14px;
+            font-size: 15px;
+            -webkit-appearance: none;
         }
         input:focus, select:focus, textarea:focus {
             border-color: var(--verde-tactico);
@@ -86,30 +89,56 @@
             background-color: var(--verde-tactico);
             color: var(--bg-principal);
             border: none;
-            padding: 12px;
+            padding: 14px;
             font-weight: bold;
             text-transform: uppercase;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             width: 100%;
             font-size: 14px;
             transition: 0.2s;
+            display: block;
         }
         button:hover { opacity: 0.9; }
+        .btn-deshacer {
+            background-color: var(--advertencia);
+            color: #000;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        .tabla-contenedor {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 15px;
+        }
         .tabla-personal {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 14px;
+            font-size: 13px;
+            min-width: 450px;
         }
         .tabla-personal th, .tabla-personal td {
             border: 1px solid var(--borde);
-            padding: 10px;
+            padding: 10px 8px;
             text-align: left;
         }
         .tabla-personal th {
-            background-color: rgba(11, 19, 41, 0.6);
+            background-color: rgba(11, 19, 41, 0.8);
             color: var(--verde-tactico);
+            font-size: 12px;
+            text-transform: uppercase;
         }
         .resultado-reporte {
             background-color: #020617;
@@ -120,30 +149,32 @@
             border-radius: 5px;
             color: #adfa1d;
             margin-top: 15px;
-            font-size: 13px;
-            line-height: 1.4;
+            font-size: 16px;
+            line-height: 1.5;
         }
         .oculto { display: none; }
         .info-jefe {
             background-color: rgba(0, 180, 216, 0.1);
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            border-radius: 6px;
             margin-bottom: 15px;
             font-size: 14px;
             border: 1px dashed var(--verde-tactico);
+            line-height: 1.4;
         }
         .btn-logout {
             background-color: var(--alerta);
             color: white;
-            padding: 8px 15px;
+            padding: 8px 14px;
             width: auto;
             float: right;
             margin-top: -5px;
             font-size: 12px;
+            border-radius: 4px;
         }
         .cuadros-resumen {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 10px;
             margin-top: 15px;
         }
@@ -159,6 +190,13 @@
             font-weight: bold;
             color: var(--exito);
         }
+        .bloque-gestion-jefe {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--borde);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -170,7 +208,7 @@
 
     <div id="pantalla-login" class="seccion">
         <h3>Autenticación de Seguridad</h3>
-        <p style="font-size: 13px; color:var(--gris-txt);">Seleccione su rol o unidad e ingrese el PIN asignado para ingresar.</p>
+        <p style="font-size: 13px; color:var(--gris-txt); margin-bottom: 15px;">Seleccione su rol o unidad e ingrese el PIN asignado para ingresar.</p>
         <div class="campo-grupo">
             <div>
                 <label>Grupo / Rol:</label>
@@ -183,7 +221,7 @@
             </div>
             <div>
                 <label>PIN de Acceso (4 dígitos):</label>
-                <input type="password" id="login-pin" placeholder="****">
+                <input type="password" id="login-pin" pattern="\d*" inputmode="numeric" placeholder="****">
             </div>
         </div>
         <button onclick="verificarAcceso()">Ingresar al Sistema</button>
@@ -209,31 +247,89 @@
         </div>
 
         <div class="campo-grupo">
-            <div style="grid-column: span 2;">
+            <div style="grid-column: span 1;">
                 <label>Actividades para el día de mañana:</label>
-                <textarea id="actividades-texto" rows="2" placeholder="Ej: Instrucción teórica y práctica en el terreno..."></textarea>
+                <textarea id="actividades-texto" rows="2" placeholder="Ej: Instrucción teórica y práctica..."></textarea>
             </div>
-        </div>
-        
-        <div class="campo-grupo">
-            <div style="grid-column: span 2;">
+            <div style="grid-column: span 1;">
                 <label>Lema de la Unidad:</label>
                 <input type="text" id="lema-grupo" value="DIOS Y PATRIA">
             </div>
         </div>
 
         <h3 style="margin-top: 25px;">Personal bajo su mando (Incluye Comandantes)</h3>
-        <table class="tabla-personal">
-            <thead>
-                <tr>
-                    <th style="width: 20%;">Grado</th>
-                    <th>Apellidos y Nombres</th>
-                    <th style="width: 40%;">Situación / Novedad</th>
-                </tr>
-            </thead>
-            <tbody id="tabla-personal-jefe">
-                </tbody>
-        </table>
+        
+        <div class="tabla-contenedor">
+            <table class="tabla-personal">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Grado</th>
+                        <th style="width: 45%;">Apellidos y Nombres</th>
+                        <th style="width: 35%;">Situación / Novedad</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-personal-jefe"></tbody>
+            </table>
+        </div>
+
+        <div class="bloque-gestion-jefe">
+            <h4 style="margin: 0 0 10px 0; font-size: 13px; color: var(--verde-tactico); text-transform: uppercase;">Modificaciones de Personal de la Unidad</h4>
+            
+            <div id="jefe-autenticado-gestion" class="oculto">
+                <button id="btn-deshacer-jefe" class="btn-deshacer oculto" onclick="ejecutarDeshacer('JEFE')">⚠️ DESHACER ELIMINACIÓN</button>
+
+                <div class="campo-grupo">
+                    <div>
+                        <label>Grado:</label>
+                        <input type="text" id="jefe-add-grado" placeholder="Ej: SI, PT, PP">
+                    </div>
+                    <div>
+                        <label>Apellidos y Nombres:</label>
+                        <input type="text" id="jefe-add-apellido" placeholder="Ej: LOPEZ GOMEZ">
+                    </div>
+                </div>
+                <div class="campo-grupo">
+                    <div>
+                        <label>Categoría Jerárquica:</label>
+                        <select id="jefe-add-categoria">
+                            <option value="1">Nivel Ejecutivo (CM-SC-IJ-IT-SI)</option>
+                            <option value="2">Patrulleros (PT)</option>
+                            <option value="3">Patrulleros de Policía (PP)</option>
+                            <option value="0">Oficiales (MY-CT-TE-ST)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Ubicar en la Jerarquía (Después de):</label>
+                        <select id="jefe-add-posicion"></select>
+                    </div>
+                </div>
+                <button onclick="jefeAgregarPersonal()" style="background-color: var(--verde-tactico); color:#0b1329; padding: 10px; font-size: 13px; margin-bottom: 15px;">Añadir Funcionario</button>
+                
+                <label style="color: var(--alerta);">Lista para Retirar Personal de Alta:</label>
+                <div class="tabla-contenedor">
+                    <table class="tabla-personal" style="min-width: 100%; margin-bottom: 10px;">
+                        <thead>
+                            <tr>
+                                <th>Grado</th>
+                                <th>Nombres y Apellidos</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jefe-tabla-eliminar"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="jefe-bloqueo-gestion">
+                <div class="campo-grupo" style="grid-template-columns: 2fr 1fr; alignment-items: end;">
+                    <div>
+                        <label>Confirme PIN de Seguridad para Modificar Personal:</label>
+                        <input type="password" id="jefe-pin-modificar" pattern="\d*" inputmode="numeric" placeholder="****">
+                    </div>
+                    <button onclick="desbloquearGestionJefe()" style="margin-top: 22px; padding: 11px; font-size: 12px; background-color: var(--borde); color: white;">Desbloquear</button>
+                </div>
+            </div>
+        </div>
 
         <button onclick="generarReporteTexto()" style="margin-top: 20px; background-color: var(--exito); color: #0b1329;">Generar Reporte de Fuerza</button>
 
@@ -270,8 +366,10 @@
             </div>
         </div>
 
-        <p style="font-size:13px; color:var(--gris-txt);">Aquí puedes dar de alta nuevos funcionarios para las bases de los jefes.</p>
+        <p style="font-size:13px; color:var(--gris-txt);">Aquí puedes dar de alta nuevos funcionarios para las bases de los jefes ubicándolos en la jerarquía que desees.</p>
         
+        <button id="btn-deshacer-admin" class="btn-deshacer oculto" onclick="ejecutarDeshacer('ADMIN')">⚠️ DESHACER ELIMINACIÓN</button>
+
         <div class="campo-grupo">
             <div>
                 <label>Grado:</label>
@@ -286,7 +384,7 @@
         <div class="campo-grupo">
             <div>
                 <label>Asignar al Grupo:</label>
-                <select id="add-grupo">
+                <select id="add-grupo" onchange="actualizarDesplegablePosicionAdmin()">
                     <option value="GRANADEROS">GRUPO GRANADEROS</option>
                     <option value="COR">GRUPO COR</option>
                     <option value="TIRO">GRUPO TIRO POLICIAL</option>
@@ -302,22 +400,31 @@
                 </select>
             </div>
         </div>
+
+        <div class="campo-grupo">
+            <div style="grid-column: span 2;">
+                <label>Ubicar en la Jerarquía (Después de):</label>
+                <select id="add-posicion"></select>
+            </div>
+        </div>
+
         <button onclick="agregarPersonal()" style="background-color: var(--exito); color:#0b1329;">Agregar a la Base de Datos</button>
 
         <h3 style="margin-top:30px;">Inventario General de Personal</h3>
-        <table class="tabla-personal">
-            <thead>
-                <tr>
-                    <th>Grupo</th>
-                    <th>Grado</th>
-                    <th>Apellidos y Nombres</th>
-                    <th>Categoría</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody id="tabla-admin-gestion">
-                </tbody>
-        </table>
+        <div class="tabla-contenedor">
+            <table class="tabla-personal">
+                <thead>
+                    <tr>
+                        <th>Grupo</th>
+                        <th>Grado</th>
+                        <th>Apellidos y Nombres</th>
+                        <th>Categoría</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-admin-gestion"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -329,8 +436,7 @@
         "ADMIN": { pin: "6098", jefe: "WILSON ROJAS" }
     };
 
-    let DB = [
-        // GRUPO GRANADEROS
+    const DEFAULT_DB = [
         { grupo: "GRANADEROS", grado: "IJ", apellido: "FERIA FERIA", cat: 1 },
         { grupo: "GRANADEROS", grado: "IT", apellido: "CAMACHO GOMEZ", cat: 1 },
         { grupo: "GRANADEROS", grado: "SI", apellido: "DEVIA VARGAS", cat: 1 },
@@ -355,7 +461,6 @@
         { grupo: "GRANADEROS", grado: "PT", apellido: "CHAVARRIA JARAMILLO", cat: 2 },
         { grupo: "GRANADEROS", grado: "PT", apellido: "FRANCO SILVA", cat: 2 },
 
-        // GRUPO COR
         { grupo: "COR", grado: "IJ", apellido: "SANABRIA TORRALBA", cat: 1 },
         { grupo: "COR", grado: "IJ", apellido: "LAVERDE ABREGO", cat: 1 },
         { grupo: "COR", grado: "IT", apellido: "AVENDAÑO FIGUEROA", cat: 1 },
@@ -373,7 +478,6 @@
         { grupo: "COR", grado: "PT", apellido: "MARTINEZ VALENCIA", cat: 2 },
         { grupo: "COR", grado: "PT", apellido: "ZAPATA VELEZ", cat: 2 },
 
-        // GRUPO TIRO POLICIAL
         { grupo: "TIRO", grado: "SC", apellido: "RUEDA BERNAL", cat: 1 },
         { grupo: "TIRO", grado: "IJ", apellido: "QUINTERO MANJARREZ", cat: 1 },
         { grupo: "TIRO", grado: "IJ", apellido: "ROBAYO MENDEZ", cat: 1 },
@@ -382,7 +486,7 @@
         { grupo: "TIRO", grado: "IT", apellido: "HERNANDEZ CASTRO", cat: 1 },
         { grupo: "TIRO", grado: "IT", apellido: "ARCE TAPASCO", cat: 1 },
         { grupo: "TIRO", grado: "IT", apellido: "ROJAS OCHOA", cat: 1 },
-        { grupo: "TIRO", grado: "IT", apellido: "CASTAKNEDA PEREZ", cat: 1 },
+        { grupo: "TIRO", grado: "IT", apellido: "CASTANEDA PEREZ", cat: 1 },
         { grupo: "TIRO", grado: "SI", apellido: "MUNOZ MOSQUERA", cat: 1 },
         { grupo: "TIRO", grado: "SI", apellido: "TORRES ARNEDO", cat: 1 },
         { grupo: "TIRO", grado: "SI", apellido: "OTALORA GRAJALES", cat: 1 },
@@ -391,7 +495,11 @@
         { grupo: "TIRO", grado: "PT", apellido: "MURILLO RUIZ", cat: 2 }
     ];
 
+    let DB = JSON.parse(localStorage.getItem('sistema_partes_db')) || DEFAULT_DB;
     let grupoActivo = "";
+    
+    // MEMORIA COMPARTIDA PARA DESHACER EL BORRADO
+    let ultimoEliminado = null;
 
     window.onload = function() {
         const fInput = document.getElementById('fecha-parte');
@@ -400,6 +508,11 @@
             prox.setDate(prox.getDate() + 1);
             fInput.value = prox.toISOString().split('T')[0];
         }
+        actualizarDesplegablePosicionAdmin();
+    }
+
+    function guardarDatosEnStorage() {
+        localStorage.setItem('sistema_partes_db', JSON.stringify(DB));
     }
 
     function verificarAcceso() {
@@ -419,8 +532,14 @@
             document.getElementById('pantalla-login').classList.add('oculto');
             document.getElementById('login-pin').value = "";
 
+            document.getElementById('jefe-autenticado-gestion').classList.add('oculto');
+            document.getElementById('jefe-bloqueo-gestion').classList.remove('oculto');
+            document.getElementById('jefe-pin-modificar').value = "";
+            ocultarBotonesDeshacer();
+
             if (grupo === 'ADMIN') {
                 document.getElementById('pantalla-admin').classList.remove('oculto');
+                actualizarDesplegablePosicionAdmin();
                 calcularConsolidado();
                 renderAdmin();
             } else {
@@ -434,6 +553,52 @@
         }
     }
 
+    function desbloquearGestionJefe() {
+        const pinIn = document.getElementById('jefe-pin-modificar').value.trim();
+        const conf = PIN_CONFIG[grupoActivo];
+        
+        let accesoValido = false;
+        if (Array.isArray(conf.pin)) {
+            accesoValido = conf.pin.includes(pinIn);
+        } else {
+            accesoValido = (conf.pin === pinIn);
+        }
+
+        if (accesoValido) {
+            document.getElementById('jefe-bloqueo-gestion').classList.add('oculto');
+            document.getElementById('jefe-autenticado-gestion').classList.remove('oculto');
+            cargarDesplegablePosicionJefe();
+            renderJefeListasEdicion();
+        } else {
+            alert("¡PIN incorrecto! No tiene autorización para modificar el personal.");
+        }
+    }
+
+    function cargarDesplegablePosicionJefe() {
+        const selectPos = document.getElementById('jefe-add-posicion');
+        if(!selectPos) return;
+        selectPos.innerHTML = `<option value="INICIO">-- AL PRINCIPIO (MÁXIMA JERARQUÍA) --</option>`;
+        
+        DB.forEach((p, idx) => {
+            if(p.grupo === grupoActivo) {
+                selectPos.innerHTML += `<option value="${idx}">Después de: ${p.grado} ${p.apellido}</option>`;
+            }
+        });
+    }
+
+    function actualizarDesplegablePosicionAdmin() {
+        const grupoSel = document.getElementById('add-grupo').value;
+        const selectPos = document.getElementById('add-posicion');
+        if(!selectPos) return;
+        selectPos.innerHTML = `<option value="INICIO">-- AL PRINCIPIO (MÁXIMA JERARQUÍA DEL GRUPO) --</option>`;
+        
+        DB.forEach((p, idx) => {
+            if(p.grupo === grupoSel) {
+                selectPos.innerHTML += `<option value="${idx}">Después de: ${p.grado} ${p.apellido}</option>`;
+            }
+        });
+    }
+
     function calcularConsolidado() {
         document.getElementById('resumen-efe').innerText = DB.length;
         document.getElementById('resumen-granaderos').innerText = DB.filter(p => p.grupo === 'GRANADEROS').length;
@@ -441,10 +606,27 @@
         document.getElementById('resumen-tiro').innerText = DB.filter(p => p.grupo === 'TIRO').length;
     }
 
+    const OPCIONES_NOVEDAD = `
+        <option value="FORMACIÓN">FORMACIÓN</option>
+        <option value="LABORANDO">LABORANDO</option>
+        <option value="OFICIAL DE SERVICIO">OFICIAL DE SERVICIO</option>
+        <option value="SUB SERVICIO">SUB SERVICIO</option>
+        <option value="S.SEMANA">S.SEMANA</option>
+        <option value="FRANQUICIA">FRANQUICIA</option>
+        <option value="EXCUSA TOTAL">EXCUSA TOTAL</option>
+        <option value="LEY MARÍA">LEY MARÍA</option>
+        <option value="LEY JOSÉ">LEY JOSÉ</option>
+        <option value="PERMISOS ESPECIALES">PERMISOS ESPECIALES</option>
+        <option value="VACACIONES">VACACIONES</option>
+        <option value="HOSPITALIZADO">HOSPITALIZADO</option>
+        <option value="INCAPACIDAD PARCIAL">INCAPACIDAD PARCIAL</option>
+        <option value="COMISIÓN SERVICIO">COMISIÓN SERVICIO</option>
+        <option value="COMISIÓN ESTUDIO">COMISIÓN ESTUDIO</option>
+    `;
+
     function renderJefe() {
         const tabla = document.getElementById('tabla-personal-jefe');
         tabla.innerHTML = "";
-        
         const miGente = DB.filter(p => p.grupo === grupoActivo);
 
         miGente.forEach((persona) => {
@@ -454,17 +636,7 @@
                     <td>${persona.apellido}</td>
                     <td>
                         <select class="novedad-select" data-cat="${persona.cat}" data-nom="${persona.grado} ${persona.apellido}">
-                            <option value="Formación">Formación</option>
-                            <option value="Laborando">Laborando</option>
-                            <option value="Servicios">Servicios</option>
-                            <option value="Franquicia">Franquicia</option>
-                            <option value="Excusa Total">Excusa Total</option>
-                            <option value="Permisos Especiales">Permisos Especiales</option>
-                            <option value="Vacaciones">Vacaciones</option>
-                            <option value="Hospitalizado">Hospitalizado</option>
-                            <option value="Incapacidad Parcial">Incapacidad Parcial</option>
-                            <option value="Comisión Servicio">Comisión Servicio</option>
-                            <option value="Comisión Estudio">Comisión Estudio</option>
+                            ${OPCIONES_NOVEDAD}
                         </select>
                     </td>
                 </tr>
@@ -472,24 +644,135 @@
         });
     }
 
+    function renderJefeListasEdicion() {
+        const tbody = document.getElementById('jefe-tabla-eliminar');
+        tbody.innerHTML = "";
+        
+        DB.forEach((persona, index) => {
+            if(persona.grupo === grupoActivo) {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${persona.grado}</strong></td>
+                        <td>${persona.apellido}</td>
+                        <td><button onclick="jefeEliminarPersonal(${index})" style="background-color:var(--alerta); color:white; padding:6px 10px; font-size:12px; width:auto; margin:0;">Retirar</button></td>
+                    </tr>
+                `;
+            }
+        });
+    }
+
+    function jefeAgregarPersonal() {
+        const grado = document.getElementById('jefe-add-grado').value.trim().toUpperCase();
+        const apellido = document.getElementById('jefe-add-apellido').value.trim().toUpperCase();
+        const cat = parseInt(document.getElementById('jefe-add-categoria').value);
+        const posSel = document.getElementById('jefe-add-posicion').value;
+
+        if (!grado || !apellido) return;
+
+        const nuevoFuncionario = { grupo: grupoActivo, grado, apellido, cat };
+
+        if(posSel === "INICIO") {
+            const primerIndex = DB.findIndex(p => p.grupo === grupoActivo);
+            if(primerIndex !== -1) {
+                DB.splice(primerIndex, 0, nuevoFuncionario);
+            } else {
+                DB.push(nuevoFuncionario);
+            }
+        } else {
+            const targetIdx = parseInt(posSel);
+            DB.splice(targetIdx + 1, 0, nuevoFuncionario);
+        }
+
+        guardarDatosEnStorage();
+        renderJefe();
+        cargarDesplegablePosicionJefe();
+        renderJefeListasEdicion();
+        ocultarBotonesDeshacer();
+
+        document.getElementById('jefe-add-grado').value = "";
+        document.getElementById('jefe-add-apellido').value = "";
+    }
+
+    // ELIMINACIÓN CON RESPALDO (VISTA JEFE)
+    function jefeEliminarPersonal(index) {
+        if(confirm("¿Está seguro de retirar este funcionario del grupo actual?")) {
+            // Guardamos respaldo
+            ultimoEliminado = { index: index, data: DB[index] };
+            
+            DB.splice(index, 1);
+            guardarDatosEnStorage();
+            renderJefe();
+            cargarDesplegablePosicionJefe();
+            renderJefeListasEdicion();
+            
+            // Mostrar botón Deshacer
+            document.getElementById('btn-deshacer-jefe').classList.remove('oculto');
+        }
+    }
+
+    // ELIMINACIÓN CON RESPALDO (VISTA ADMIN)
+    function eliminarPersonal(index) {
+        if(confirm("¿Seguro que deseas eliminar este funcionario de manera global?")) {
+            // Guardamos respaldo
+            ultimoEliminado = { index: index, data: DB[index] };
+
+            DB.splice(index, 1);
+            guardarDatosEnStorage();
+            actualizarDesplegablePosicionAdmin();
+            calcularConsolidado();
+            renderAdmin();
+            
+            // Mostrar botón Deshacer
+            document.getElementById('btn-deshacer-admin').classList.remove('oculto');
+        }
+    }
+
+    // ACCIÓN TÁCTICA PARA DESHACER
+    function ejecutarDeshacer(pantalla) {
+        if (ultimoEliminado) {
+            // Reinsertamos exactamente en la posición guardada
+            DB.splice(ultimoEliminado.index, 0, ultimoEliminado.data);
+            guardarDatosEnStorage();
+            ultimoEliminado = null; // Limpiamos la memoria
+
+            ocultarBotonesDeshacer();
+
+            if (pantalla === 'ADMIN') {
+                actualizarDesplegablePosicionAdmin();
+                calcularConsolidado();
+                renderAdmin();
+            } else {
+                renderJefe();
+                cargarDesplegablePosicionJefe();
+                renderJefeListasEdicion();
+            }
+            alert("¡Eliminación revertida! El funcionario ha vuelto a su jerarquía.");
+        }
+    }
+
+    function ocultarBotonesDeshacer() {
+        document.getElementById('btn-deshacer-jefe').classList.add('oculto');
+        document.getElementById('btn-deshacer-admin').classList.add('oculto');
+    }
+
     function generarReporteTexto() {
         const fecha = document.getElementById('fecha-parte').value;
         const horaF = document.getElementById('hora-formacion').value;
-        const actividades = document.getElementById('actividades-texto').value || "Sin novedades en actividades.";
-        const lema = document.getElementById('lema-grupo').value;
+        const actividades = document.getElementById('actividades-texto').value || "SIN NOVEDADES EN ACTIVIDADES.";
+        const lema = document.getElementById('lema-grupo').value.toUpperCase();
 
         let fEfe = [0, 0, 0, 0];
+        
         let conteos = {
-            "Formación": [0,0,0,0], "Laborando": [0,0,0,0], "Servicios": [0,0,0,0],
-            "Franquicia": [0,0,0,0], "Excusa Total": [0,0,0,0], "Permisos Especiales": [0,0,0,0], "Vacaciones": [0,0,0,0],
-            "Hospitalizado": [0,0,0,0], "Incapacidad Parcial": [0,0,0,0], "Comisión Servicio": [0,0,0,0], "Comisión Estudio": [0,0,0,0]
+            "FORMACIÓN": [0,0,0,0], "LABORANDO": [0,0,0,0],
+            "OFICIAL DE SERVICIO": [0,0,0,0], "SUB SERVICIO": [0,0,0,0], "S.SEMANA": [0,0,0,0],
+            "FRANQUICIA": [0,0,0,0], "EXCUSA TOTAL": [0,0,0,0], "LEY MARÍA": [0,0,0,0], "LEY JOSÉ": [0,0,0,0],
+            "PERMISOS ESPECIALES": [0,0,0,0], "VACACIONES": [0,0,0,0], "HOSPITALIZADO": [0,0,0,0],
+            "INCAPACIDAD PARCIAL": [0,0,0,0], "COMISIÓN SERVICIO": [0,0,0,0], "COMISIÓN ESTUDIO": [0,0,0,0]
         };
 
-        let listasNombres = {
-            "Formación": [], "Laborando": [], "Servicios": [], "Franquicia": [], "Excusa Total": [],
-            "Permisos Especiales": [], "Vacaciones": [], "Hospitalizado": [],
-            "Incapacidad Parcial": [], "Comisión Servicio": [], "Comisión Estudio": []
-        };
+        let listasNombres = {};
+        for(let key in conteos) { listasNombres[key] = []; }
 
         const losSelects = document.querySelectorAll('.novedad-select');
         losSelects.forEach((elSelect) => {
@@ -498,91 +781,115 @@
             const nombreCompleto = elSelect.dataset.nom;
 
             fEfe[cat]++;
-            conteos[novedad][cat]++;
-            listasNombres[novedad].push(nombreCompleto);
+            if(conteos[novedad]) {
+                conteos[novedad][cat]++;
+                listasNombres[novedad].push(nombreCompleto);
+            }
         });
 
-        // Sumar novedades específicas (Todo lo que no sea Formación, Laborando o Servicios)
         let fNov = [0,0,0,0];
         for(let n in conteos) {
-            if(n !== "Formación" && n !== "Laborando" && n !== "Servicios") {
+            if(n !== "FORMACIÓN" && n !== "LABORANDO") {
                 for(let i=0; i<4; i++) fNov[i] += conteos[n][i];
             }
         }
 
         const fmt = (a) => `${a[0]}-${a[1]}-${a[2]}-${a[3]}= ${a.reduce((x,y)=>x+y,0)}`;
-        const impLista = (arr) => arr.length > 0 ? arr.map(n => `  ${n}`).join('\n') : "  Ninguno";
+        const impLista = (arr) => arr.length > 0 ? arr.map(n => `  ${n}`).join('\n') : "  NINGUNO";
 
         let txt = `*GRUPO INSTRUCTORES “${grupoActivo === 'TIRO' ? 'TIRO POLICIAL' : grupoActivo}”*\n\n`;
-        txt += `Dios y patria mi Mayor, me permito enviar actividades para el día de mañana “${fecha}” por parte del grupo así:\n\n`;
-        txt += `Fuerza Efe: ${fmt(fEfe)}\n`;
-        txt += `Fuerza Dis: ${fmt(fEfe)}\n`;
-        txt += `Novedades: ${fmt(fNov)}\n`;
+        txt += `DIOS Y PATRIA MI MAYOR, ME PERMITO ENVIAR ACTIVIDADES PARA EL DÍA DE MAÑANA “${fecha}” POR PARTE DEL GRUPO ASÍ:\n\n`;
+        txt += `FUERZA EFE: ${fmt(fEfe)}\n`;
+        txt += `FUERZA DIS: ${fmt(fEfe)}\n`;
+        txt += `NOVEDADES: ${fmt(fNov)}\n`;
         txt += `.....................\n`;
         txt += `·  “${horaF}” FORMACION*\n`;
-        txt += `Forman\n${fmt(conteos["Formación"])}\n`;
-        txt += `  *Grado* *Apellido*\n`;
-        txt += `${impLista(listasNombres["Formación"])}\n\n`;
+        txt += `FORMAN\n${fmt(conteos["FORMACIÓN"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["FORMACIÓN"])}\n\n`;
 
-        txt += `*LABORANDO*\n${fmt(conteos["Laborando"])}\n`;
-        txt += `*ACTIVIDADES*\n_${actividades}_\n`;
-        txt += `  *Grado* *Apellido*\n`;
-        txt += `${impLista(listasNombres["Laborando"])}\n\n`;
+        txt += `*LABORANDO*\n${fmt(conteos["LABORANDO"])}\n`;
+        txt += `*ACTIVIDADES*\n_${actividades.toUpperCase()}_\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["LABORANDO"])}\n\n`;
 
-        txt += `*SERVICIOS*\n${fmt(conteos["Servicios"])}\n`;
-        txt += `  *Grado* *Apellido*\n`;
-        txt += `${impLista(listasNombres["Servicios"])}\n`;
         txt += `......................................\n`;
         txt += `*NOVEDADES ESPECIFICAS*\n`;
         
-        txt += `*FRANQUICIA*\n${fmt(conteos["Franquicia"])}\n`;
-        txt += `  *Grado* *Apellido*\n`;
-        txt += `${impLista(listasNombres["Franquicia"])}\n\n`;
+        txt += `*OFICIAL DE SERVICIO*\n${fmt(conteos["OFICIAL DE SERVICIO"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["OFICIAL DE SERVICIO"])}\n\n`;
 
-        // INCLUSIÓN: Sección de "EXCUSA TOTAL" en el cuerpo
-        txt += `*EXCUSA TOTAL*\n${fmt(conteos["Excusa Total"])}\n`;
-        txt += `  *Grado* *Apellido*\n`;
-        txt += `${impLista(listasNombres["Excusa Total"])}\n\n`;
+        txt += `*SUB SERVICIO*\n${fmt(conteos["SUB SERVICIO"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["SUB SERVICIO"])}\n\n`;
+
+        txt += `*S.SEMANA*\n${fmt(conteos["S.SEMANA"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["S.SEMANA"])}\n\n`;
+
+        txt += `*FRANQUICIA*\n${fmt(conteos["FRANQUICIA"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["FRANQUICIA"])}\n\n`;
+
+        txt += `*EXCUSA TOTAL*\n${fmt(conteos["EXCUSA TOTAL"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["EXCUSA TOTAL"])}\n\n`;
+
+        txt += `*LEY MARÍA*\n${fmt(conteos["LEY MARÍA"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["LEY MARÍA"])}\n\n`;
+
+        txt += `*LEY JOSÉ*\n${fmt(conteos["LEY JOSÉ"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["LEY JOSÉ"])}\n\n`;
         
-        txt += `*PERMISOS ESPECIALES*\n${fmt(conteos["Permisos Especiales"])}\n`;
-        txt += `  *Grado* *Apellido*\n`;
-        txt += `${impLista(listasNombres["Permisos Especiales"])}\n\n`;
+        txt += `*PERMISOS ESPECIALES*\n${fmt(conteos["PERMISOS ESPECIALES"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["PERMISOS ESPECIALES"])}\n\n`;
 
-        txt += `*Vacaciones*\n${fmt(conteos["Vacaciones"])}\n`;
-        txt += `  *Grado* *Apellido*\n`;
-        txt += `${impLista(listasNombres["Vacaciones"])}\n\n`;
+        txt += `*VACACIONES*\n${fmt(conteos["VACACIONES"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["VACACIONES"])}\n\n`;
 
-        txt += `*HOSPITALIZADO*\n${fmt(conteos["Hospitalizado"])}\n`;
-        txt += `  *Grado* *Apellido*\n`;
-        txt += `${impLista(listasNombres["Hospitalizado"])}\n`;
+        txt += `*HOSPITALIZADO*\n${fmt(conteos["HOSPITALIZADO"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["HOSPITALIZADO"])}\n`;
         txt += `..................................\n`;
-        txt += `*INCAPACIDAD PARCIAL*\n${fmt(conteos["Incapacidad Parcial"])}\n`;
-        txt += `  *Grado* *Apellido*\n`;
-        txt += `${impLista(listasNombres["Incapacidad Parcial"])}\n`;
+        txt += `*INCAPACIDAD PARCIAL*\n${fmt(conteos["INCAPACIDAD PARCIAL"])}\n`;
+        txt += `  *GRADO* *APELLIDO*\n`;
+        txt += `${impLista(listasNombres["INCAPACIDAD PARCIAL"])}\n`;
         txt += `...……………………….............\n`;
-        txt += `*COMISION DEL SERVICIO*\n${fmt(conteos["Comisión Servicio"])}\n`;
-        txt += `  *Grado* *Apellido* *UNIDAD*\n`;
-        txt += `${impLista(listasNombres["Comisión Servicio"])}\n\n`;
+        txt += `*COMISION DEL SERVICIO*\n${fmt(conteos["COMISIÓN SERVICIO"])}\n`;
+        txt += `  *GRADO* *APELLIDO* *UNIDAD*\n`;
+        txt += `${impLista(listasNombres["COMISIÓN SERVICIO"])}\n\n`;
 
-        txt += `*COMISION DE ESTUDIO*\n${fmt(conteos["Comisión Estudio"])}\n`;
-        txt += `  *Grado* *Apellido* *UNIDAD*\n`;
-        txt += `${impLista(listasNombres["Comisión Estudio"])}\n`;
+        txt += `*COMISION DE ESTUDIO*\n${fmt(conteos["COMISIÓN ESTUDIO"])}\n`;
+        txt += `  *GRADO* *APELLIDO* *UNIDAD*\n`;
+        txt += `${impLista(listasNombres["COMISIÓN ESTUDIO"])}\n`;
         txt += `...……………………….............\n\n`;
 
         txt += `Fuerza Efe: ${fmt(fEfe)}\n`;
         txt += `Fuerza Dis: ${fmt(fEfe)}\n`;
         txt += `Novedades ${fmt(fNov)}\n`;
-        txt += `Laborando: ${fmt(conteos["Laborando"])}\n`;
-        txt += `Formación: ${fmt(conteos["Formación"])}\n`;
-        txt += `Servicios:   ${fmt(conteos["Servicios"])}\n`;
-        txt += `Comisión Estudio: ${fmt(conteos["Comisión Estudio"])}\n`;
-        txt += `Comisión  Ser : ${fmt(conteos["Comisión Servicio"])}\n`;
-        txt += `Vacaciones : ${fmt(conteos["Vacaciones"])}\n`;
-        txt += `Franquicia : ${fmt(conteos["Franquicia"])}\n`;
-        txt += `Excusa Total : ${fmt(conteos["Excusa Total"])}\n`; // AGREGADO AL RESUMEN FINAL
-        txt += `Hospitalizado ${fmt(conteos["Hospitalizado"])}\n`;
-        txt += `Incapacidad: ${fmt(conteos["Incapacidad Parcial"])}\n`;
-        txt += `Permisos Esp :${fmt(conteos["Permisos Especiales"])}\n\n`;
+        
+        txt += `..................................\n`;
+
+        txt += `LABORANDO: ${fmt(conteos["LABORANDO"])}\n`;
+        txt += `FORMACIÓN: ${fmt(conteos["FORMACIÓN"])}\n`;
+        txt += `OFICIAL SERVICIO: ${fmt(conteos["OFICIAL DE SERVICIO"])}\n`;
+        txt += `SUB SERVICIO: ${fmt(conteos["SUB SERVICIO"])}\n`;
+        txt += `S.SEMANA: ${fmt(conteos["S.SEMANA"])}\n`;
+        txt += `COMISIÓN ESTUDIO: ${fmt(conteos["COMISIÓN ESTUDIO"])}\n`;
+        txt += `COMISIÓN  SER : ${fmt(conteos["COMISIÓN SERVICIO"])}\n`;
+        txt += `VACACIONES : ${fmt(conteos["VACACIONES"])}\n`;
+        txt += `FRANQUICIA : ${fmt(conteos["FRANQUICIA"])}\n`;
+        txt += `EXCUSA TOTAL : ${fmt(conteos["EXCUSA TOTAL"])}\n`;
+        txt += `LEY MARÍA : ${fmt(conteos["LEY MARÍA"])}\n`;
+        txt += `LEY JOSÉ : ${fmt(conteos["LEY JOSÉ"])}\n`;
+        txt += `HOSPITALIZADO ${fmt(conteos["HOSPITALIZADO"])}\n`;
+        txt += `INCAPACIDAD: ${fmt(conteos["INCAPACIDAD PARCIAL"])}\n`;
+        txt += `PERMISOS ESP :${fmt(conteos["PERMISOS ESPECIALES"])}\n\n`;
         txt += `*“${lema}”*`;
 
         document.getElementById('texto-reporte-final').innerText = txt;
@@ -610,7 +917,7 @@
                         <td><strong>${persona.grado}</strong></td>
                         <td>${persona.apellido}</td>
                         <td><small>${catTexto}</small></td>
-                        <td><button onclick="eliminarPersonal(${index})" style="background-color:var(--alerta); color:white; padding:4px 8px; font-size:12px; width:auto; margin:0;">Eliminar</button></td>
+                        <td><button onclick="eliminarPersonal(${index})" style="background-color:var(--alerta); color:white; padding:6px 10px; font-size:12px; width:auto; margin:0;">Eliminar</button></td>
                     </tr>
                 `;
             });
@@ -622,29 +929,42 @@
         const apellido = document.getElementById('add-apellido').value.trim().toUpperCase();
         const group = document.getElementById('add-grupo').value;
         const cat = parseInt(document.getElementById('add-categoria').value);
+        const posSel = document.getElementById('add-posicion').value;
 
         if (!grado || !apellido) return;
 
-        DB.push({ grupo: group, grado, apellido, cat });
+        const nuevoFuncionario = { grupo: group, grado, apellido, cat };
+
+        if(posSel === "INICIO") {
+            const primerIndex = DB.findIndex(p => p.grupo === group);
+            if(primerIndex !== -1) {
+                DB.splice(primerIndex, 0, nuevoFuncionario);
+            } else {
+                DB.push(nuevoFuncionario);
+            }
+        } else {
+            const targetIdx = parseInt(posSel);
+            DB.splice(targetIdx + 1, 0, nuevoFuncionario);
+        }
+
+        guardarDatosEnStorage();
+        actualizarDesplegablePosicionAdmin();
         calcularConsolidado();
         renderAdmin();
+        ocultarBotonesDeshacer();
 
         document.getElementById('add-grado').value = "";
         document.getElementById('add-apellido').value = "";
     }
 
-    function eliminarPersonal(index) {
-        DB.splice(index, 1);
-        calcularConsolidado();
-        renderAdmin();
-    }
-
     function salir() {
         grupoActivo = "";
+        ultimoEliminado = null;
         document.getElementById('pantalla-jefe').classList.add('oculto');
         document.getElementById('pantalla-admin').classList.add('oculto');
         document.getElementById('contenedor-reporte').classList.add('oculto');
         document.getElementById('pantalla-login').classList.remove('oculto');
+        ocultarBotonesDeshacer();
     }
 </script>
 
