@@ -467,7 +467,7 @@
         { grupo: "COR", grado: "SI", apellido: "VARGAS ALDANA", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "CRUZ SUAREZ", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "ACEVEDO RODRIGUEZ", cat: 1 },
-        { grupo: "COR", grado: "SI", apellido: "SUAREZ GARCIA", cat: 1 },
+        { grupo: "COR", status: "SI", apellido: "SUAREZ GARCIA", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "FORERO RAMIREZ", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "RONDON CANIZALES", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "BEDOYA GIRALDO", cat: 1 },
@@ -497,8 +497,6 @@
 
     let DB = JSON.parse(localStorage.getItem('sistema_partes_db')) || DEFAULT_DB;
     let grupoActivo = "";
-    
-    // MEMORIA COMPARTIDA PARA DESHACER EL BORRADO
     let ultimoEliminado = null;
 
     window.onload = function() {
@@ -622,6 +620,34 @@
         <option value="INCAPACIDAD PARCIAL">INCAPACIDAD PARCIAL</option>
         <option value="COMISIÓN SERVICIO">COMISIÓN SERVICIO</option>
         <option value="COMISIÓN ESTUDIO">COMISIÓN ESTUDIO</option>
+        <option value="PERMISO SEMANA SANTA">PERMISO SEMANA SANTA</option>
+        <option value="PERMISO DICIEMBRE">PERMISO DICIEMBRE</option>
+        <option value="APOYO AXP PERMANENTE">APOYO AXP PERMANENTE</option>
+        <option value="APOYO SEGURIDAD">APOYO SEGURIDAD</option>
+        <option value="COMISIÓN AL EXTERIOR">COMISIÓN AL EXTERIOR</option>
+        <option value="COMISIÓN DE ESTUDIOS EN EL EXTERIOR">COMISIÓN DE ESTUDIOS EN EL EXTERIOR</option>
+        <option value="PERMISO DILIGENCIA PERSONAL">PERMISO DILIGENCIA PERSONAL</option>
+        <option value="CURSO DE ASCENSO">CURSO DE ASCENSO</option>
+        <option value="PERMISO CITA MÉDICA">PERMISO CITA MÉDICA</option>
+        <option value="SEPARACIÓN TEMPORAL">SEPARACIÓN TEMPORAL</option>
+        <option value="EVADIDO">EVADIDO</option>
+        <option value="EXCUSA PARCIAL">EXCUSA PARCIAL</option>
+        <option value="CONCURSO PATRULLEROS">CONCURSO PATRULLEROS</option>
+        <option value="LICENCIA DE MATERNIDAD O PATERNIDAD">LICENCIA DE MATERNIDAD O PATERNIDAD</option>
+        <option value="LICENCIA NO REMUNERADA">LICENCIA NO REMUNERADA</option>
+        <option value="LICENCIA POR LUTO">LICENCIA POR LUTO</option>
+        <option value="LICENCIA REMUNERADA">LICENCIA REMUNERADA</option>
+        <option value="PENDIENTE ACTUALIZAR TRASLADO SIATH">PENDIENTE ACTUALIZAR TRASLADO SIATH</option>
+        <option value="PENDIENTE POR RETIRAR">PENDIENTE POR RETIRAR</option>
+        <option value="CAPTURADO">CAPTURADO</option>
+        <option value="RECIEN TRASLADADO (NO PRESENTADO AL CENOP)">RECIEN TRASLADADO (NO PRESENTADO AL CENOP)</option>
+        <option value="RECIEN TRASLADADO (PENDIENTE POR PRESENTAR A LA UNIDAD)">RECIEN TRASLADADO (PENDIENTE POR PRESENTAR A LA UNIDAD)</option>
+        <option value="PENDIENTE POR TRAMITE DE REINTEGRO">PENDIENTE POR TRAMITE DE REINTEGRO</option>
+        <option value="SUSPENSIÓN">SUSPENSIÓN</option>
+        <option value="CLASE AXP">CLASE AXP</option>
+        <option value="REALIZÓ 1RO 1500">REALIZÓ 1RO 1500</option>
+        <option value="CITA MEDICA CENOP">CITA MEDICA CENOP</option>
+        <option value="RETRASADO">RETRASADO</option>
     `;
 
     function renderJefe() {
@@ -693,48 +719,35 @@
         document.getElementById('jefe-add-apellido').value = "";
     }
 
-    // ELIMINACIÓN CON RESPALDO (VISTA JEFE)
     function jefeEliminarPersonal(index) {
         if(confirm("¿Está seguro de retirar este funcionario del grupo actual?")) {
-            // Guardamos respaldo
             ultimoEliminado = { index: index, data: DB[index] };
-            
             DB.splice(index, 1);
             guardarDatosEnStorage();
             renderJefe();
             cargarDesplegablePosicionJefe();
             renderJefeListasEdicion();
-            
-            // Mostrar botón Deshacer
             document.getElementById('btn-deshacer-jefe').classList.remove('oculto');
         }
     }
 
-    // ELIMINACIÓN CON RESPALDO (VISTA ADMIN)
     function eliminarPersonal(index) {
         if(confirm("¿Seguro que deseas eliminar este funcionario de manera global?")) {
-            // Guardamos respaldo
             ultimoEliminado = { index: index, data: DB[index] };
-
             DB.splice(index, 1);
             guardarDatosEnStorage();
             actualizarDesplegablePosicionAdmin();
             calcularConsolidado();
             renderAdmin();
-            
-            // Mostrar botón Deshacer
             document.getElementById('btn-deshacer-admin').classList.remove('oculto');
         }
     }
 
-    // ACCIÓN TÁCTICA PARA DESHACER
     function ejecutarDeshacer(pantalla) {
         if (ultimoEliminado) {
-            // Reinsertamos exactamente en la posición guardada
             DB.splice(ultimoEliminado.index, 0, ultimoEliminado.data);
             guardarDatosEnStorage();
-            ultimoEliminado = null; // Limpiamos la memoria
-
+            ultimoEliminado = null;
             ocultarBotonesDeshacer();
 
             if (pantalla === 'ADMIN') {
@@ -763,12 +776,23 @@
 
         let fEfe = [0, 0, 0, 0];
         
+        // Mapeo completo de todas las novedades actuales para conteos y listas
         let conteos = {
-            "FORMACIÓN": [0,0,0,0], "LABORANDO": [0,0,0,0],
-            "OFICIAL DE SERVICIO": [0,0,0,0], "SUB SERVICIO": [0,0,0,0], "S.SEMANA": [0,0,0,0],
-            "FRANQUICIA": [0,0,0,0], "EXCUSA TOTAL": [0,0,0,0], "LEY MARÍA": [0,0,0,0], "LEY JOSÉ": [0,0,0,0],
-            "PERMISOS ESPECIALES": [0,0,0,0], "VACACIONES": [0,0,0,0], "HOSPITALIZADO": [0,0,0,0],
-            "INCAPACIDAD PARCIAL": [0,0,0,0], "COMISIÓN SERVICIO": [0,0,0,0], "COMISIÓN ESTUDIO": [0,0,0,0]
+            "FORMACIÓN": [0,0,0,0], "LABORANDO": [0,0,0,0], "OFICIAL DE SERVICIO": [0,0,0,0], 
+            "SUB SERVICIO": [0,0,0,0], "S.SEMANA": [0,0,0,0], "FRANQUICIA": [0,0,0,0], 
+            "EXCUSA TOTAL": [0,0,0,0], "LEY MARÍA": [0,0,0,0], "LEY JOSÉ": [0,0,0,0], 
+            "PERMISOS ESPECIALES": [0,0,0,0], "VACACIONES": [0,0,0,0], "HOSPITALIZADO": [0,0,0,0], 
+            "INCAPACIDAD PARCIAL": [0,0,0,0], "COMISIÓN SERVICIO": [0,0,0,0], "COMISIÓN ESTUDIO": [0,0,0,0],
+            "PERMISO SEMANA SANTA": [0,0,0,0], "PERMISO DICIEMBRE": [0,0,0,0], "APOYO AXP PERMANENTE": [0,0,0,0], 
+            "APOYO SEGURIDAD": [0,0,0,0], "COMISIÓN AL EXTERIOR": [0,0,0,0], "COMISIÓN DE ESTUDIOS EN EL EXTERIOR": [0,0,0,0], 
+            "PERMISO DILIGENCIA PERSONAL": [0,0,0,0], "CURSO DE ASCENSO": [0,0,0,0], "PERMISO CITA MÉDICA": [0,0,0,0], 
+            "SEPARACIÓN TEMPORAL": [0,0,0,0], "EVADIDO": [0,0,0,0], "EXCUSA PARCIAL": [0,0,0,0], 
+            "CONCURSO PATRULLEROS": [0,0,0,0], "LICENCIA DE MATERNIDAD O PATERNIDAD": [0,0,0,0], "LICENCIA NO REMUNERADA": [0,0,0,0], 
+            "LICENCIA POR LUTO": [0,0,0,0], "LICENCIA REMUNERADA": [0,0,0,0], "PENDIENTE ACTUALIZAR TRASLADO SIATH": [0,0,0,0], 
+            "PENDIENTE POR RETIRAR": [0,0,0,0], "CAPTURADO": [0,0,0,0], "RECIEN TRASLADADO (NO PRESENTADO AL CENOP)": [0,0,0,0], 
+            "RECIEN TRASLADADO (PENDIENTE POR PRESENTAR A LA UNIDAD)": [0,0,0,0], "PENDIENTE POR TRAMITE DE REINTEGRO": [0,0,0,0], 
+            "SUSPENSIÓN": [0,0,0,0], "CLASE AXP": [0,0,0,0], "REALIZÓ 1RO 1500": [0,0,0,0], 
+            "CITA MEDICA CENOP": [0,0,0,0], "RETRASADO": [0,0,0,0]
         };
 
         let listasNombres = {};
@@ -795,7 +819,7 @@
         }
 
         const fmt = (a) => `${a[0]}-${a[1]}-${a[2]}-${a[3]}= ${a.reduce((x,y)=>x+y,0)}`;
-        const impLista = (arr) => arr.length > 0 ? arr.map(n => `  ${n}`).join('\n') : "  NINGUNO";
+        const impLista = (arr) => arr.map(n => `  ${n}`).join('\n');
 
         let txt = `*GRUPO INSTRUCTORES “${grupoActivo === 'TIRO' ? 'TIRO POLICIAL' : grupoActivo}”*\n\n`;
         txt += `DIOS Y PATRIA MI MAYOR, ME PERMITO ENVIAR ACTIVIDADES PARA EL DÍA DE MAÑANA “${fecha}” POR PARTE DEL GRUPO ASÍ:\n\n`;
@@ -803,94 +827,52 @@
         txt += `FUERZA DIS: ${fmt(fEfe)}\n`;
         txt += `NOVEDADES: ${fmt(fNov)}\n`;
         txt += `.....................\n`;
-        txt += `·  “${horaF}” FORMACION*\n`;
-        txt += `FORMAN\n${fmt(conteos["FORMACIÓN"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["FORMACIÓN"])}\n\n`;
 
-        txt += `*LABORANDO*\n${fmt(conteos["LABORANDO"])}\n`;
-        txt += `*ACTIVIDADES*\n_${actividades.toUpperCase()}_\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["LABORANDO"])}\n\n`;
+        // Solo mostrar Bloque Formación si se usa
+        if(listasNombres["FORMACIÓN"].length > 0) {
+            txt += `·  “${horaF}” FORMACION*\n`;
+            txt += `FORMAN\n${fmt(conteos["FORMACIÓN"])}\n`;
+            txt += `  *GRADO* *APELLIDO*\n`;
+            txt += `${impLista(listasNombres["FORMACIÓN"])}\n\n`;
+        }
+
+        // Solo mostrar Bloque Laborando si se usa
+        if(listasNombres["LABORANDO"].length > 0) {
+            txt += `*LABORANDO*\n${fmt(conteos["LABORANDO"])}\n`;
+            txt += `*ACTIVIDADES*\n_${actividades.toUpperCase()}_\n`;
+            txt += `  *GRADO* *APELLIDO*\n`;
+            txt += `${impLista(listasNombres["LABORANDO"])}\n\n`;
+        }
 
         txt += `......................................\n`;
-        txt += `*NOVEDADES ESPECIFICAS*\n`;
+        txt += `*NOVEDADES ESPECIFICAS*\n\n`;
         
-        txt += `*OFICIAL DE SERVICIO*\n${fmt(conteos["OFICIAL DE SERVICIO"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["OFICIAL DE SERVICIO"])}\n\n`;
+        // RECORRIDO DINÁMICO: Solo imprime la novedad específica si tiene al menos un funcionario
+        for(let n in conteos) {
+            if(n !== "FORMACIÓN" && n !== "LABORANDO") {
+                if(listasNombres[n].length > 0) {
+                    txt += `*${n}*\n${fmt(conteos[n])}\n`;
+                    txt += `  *GRADO* *APELLIDO*\n`;
+                    txt += `${impLista(listasNombres[n])}\n\n`;
+                }
+            }
+        }
 
-        txt += `*SUB SERVICIO*\n${fmt(conteos["SUB SERVICIO"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["SUB SERVICIO"])}\n\n`;
-
-        txt += `*S.SEMANA*\n${fmt(conteos["S.SEMANA"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["S.SEMANA"])}\n\n`;
-
-        txt += `*FRANQUICIA*\n${fmt(conteos["FRANQUICIA"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["FRANQUICIA"])}\n\n`;
-
-        txt += `*EXCUSA TOTAL*\n${fmt(conteos["EXCUSA TOTAL"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["EXCUSA TOTAL"])}\n\n`;
-
-        txt += `*LEY MARÍA*\n${fmt(conteos["LEY MARÍA"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["LEY MARÍA"])}\n\n`;
-
-        txt += `*LEY JOSÉ*\n${fmt(conteos["LEY JOSÉ"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["LEY JOSÉ"])}\n\n`;
-        
-        txt += `*PERMISOS ESPECIALES*\n${fmt(conteos["PERMISOS ESPECIALES"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["PERMISOS ESPECIALES"])}\n\n`;
-
-        txt += `*VACACIONES*\n${fmt(conteos["VACACIONES"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["VACACIONES"])}\n\n`;
-
-        txt += `*HOSPITALIZADO*\n${fmt(conteos["HOSPITALIZADO"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["HOSPITALIZADO"])}\n`;
         txt += `..................................\n`;
-        txt += `*INCAPACIDAD PARCIAL*\n${fmt(conteos["INCAPACIDAD PARCIAL"])}\n`;
-        txt += `  *GRADO* *APELLIDO*\n`;
-        txt += `${impLista(listasNombres["INCAPACIDAD PARCIAL"])}\n`;
-        txt += `...……………………….............\n`;
-        txt += `*COMISION DEL SERVICIO*\n${fmt(conteos["COMISIÓN SERVICIO"])}\n`;
-        txt += `  *GRADO* *APELLIDO* *UNIDAD*\n`;
-        txt += `${impLista(listasNombres["COMISIÓN SERVICIO"])}\n\n`;
-
-        txt += `*COMISION DE ESTUDIO*\n${fmt(conteos["COMISIÓN ESTUDIO"])}\n`;
-        txt += `  *GRADO* *APELLIDO* *UNIDAD*\n`;
-        txt += `${impLista(listasNombres["COMISIÓN ESTUDIO"])}\n`;
-        txt += `...……………………….............\n\n`;
-
         txt += `Fuerza Efe: ${fmt(fEfe)}\n`;
         txt += `Fuerza Dis: ${fmt(fEfe)}\n`;
         txt += `Novedades ${fmt(fNov)}\n`;
-        
-        txt += `..................................\n`;
+        txt += `..................................\n\n`;
 
-        txt += `LABORANDO: ${fmt(conteos["LABORANDO"])}\n`;
-        txt += `FORMACIÓN: ${fmt(conteos["FORMACIÓN"])}\n`;
-        txt += `OFICIAL SERVICIO: ${fmt(conteos["OFICIAL DE SERVICIO"])}\n`;
-        txt += `SUB SERVICIO: ${fmt(conteos["SUB SERVICIO"])}\n`;
-        txt += `S.SEMANA: ${fmt(conteos["S.SEMANA"])}\n`;
-        txt += `COMISIÓN ESTUDIO: ${fmt(conteos["COMISIÓN ESTUDIO"])}\n`;
-        txt += `COMISIÓN  SER : ${fmt(conteos["COMISIÓN SERVICIO"])}\n`;
-        txt += `VACACIONES : ${fmt(conteos["VACACIONES"])}\n`;
-        txt += `FRANQUICIA : ${fmt(conteos["FRANQUICIA"])}\n`;
-        txt += `EXCUSA TOTAL : ${fmt(conteos["EXCUSA TOTAL"])}\n`;
-        txt += `LEY MARÍA : ${fmt(conteos["LEY MARÍA"])}\n`;
-        txt += `LEY JOSÉ : ${fmt(conteos["LEY JOSÉ"])}\n`;
-        txt += `HOSPITALIZADO ${fmt(conteos["HOSPITALIZADO"])}\n`;
-        txt += `INCAPACIDAD: ${fmt(conteos["INCAPACIDAD PARCIAL"])}\n`;
-        txt += `PERMISOS ESP :${fmt(conteos["PERMISOS ESPECIALES"])}\n\n`;
-        txt += `*“${lema}”*`;
+        // RESUMEN FINAL DINÁMICO: Solo muestra las filas que tengan un conteo mayor a cero
+        for(let n in conteos) {
+            let totalNovedad = conteos[n].reduce((x,y)=>x+y,0);
+            if(totalNovedad > 0) {
+                txt += `${n}: ${fmt(conteos[n])}\n`;
+            }
+        }
+        
+        txt += `\n*“${lema}”*`;
 
         document.getElementById('texto-reporte-final').innerText = txt;
         document.getElementById('contenedor-reporte').classList.remove('oculto');
