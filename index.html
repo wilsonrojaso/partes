@@ -6,20 +6,21 @@
     <title>Sistema Digital de Partes y Novedades</title>
     <style>
         :root {
-            --bg-principal: #0b1329;
-            --bg-tarjeta: #1c2541;
-            --verde-tactico: #00b4d8;
-            --texto-claro: #f8fafc;
-            --borde: #3a506b;
-            --exito: #06d6a0;
-            --alerta: #ef476f;
-            --gris-txt: #94a3b8;
-            --advertencia: #f59e0b;
+            --bg-principal: #f0f4f8;
+            --bg-tarjeta: #ffffff;
+            --azul-pastel-oscuro: #3a86c8;
+            --azul-pastel-claro: #e1ecf7;
+            --texto-oscuro: #2c3e50;
+            --borde: #cbd5e1;
+            --exito: #2ecc71;
+            --alerta: #e74c3c;
+            --gris-txt: #64748b;
+            --advertencia: #f1c40f;
         }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             background-color: var(--bg-principal);
-            color: var(--texto-claro);
+            color: var(--texto-oscuro);
             margin: 0;
             padding: 10px;
         }
@@ -29,8 +30,8 @@
         }
         .titulo-app {
             text-align: center;
-            color: var(--texto-claro);
-            border-bottom: 2px solid var(--verde-tactico);
+            color: var(--azul-pastel-oscuro);
+            border-bottom: 2px solid var(--azul-pastel-oscuro);
             padding-bottom: 12px;
             margin-bottom: 20px;
             text-transform: uppercase;
@@ -44,20 +45,20 @@
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         h3 {
-            color: var(--verde-tactico);
+            color: var(--azul-pastel-oscuro);
             margin-top: 0;
             text-transform: uppercase;
-            border-left: 4px solid var(--verde-tactico);
+            border-left: 4px solid var(--azul-pastel-oscuro);
             padding-left: 10px;
             font-size: 15px;
         }
         .campo-grupo {
             display: grid;
             grid-template-columns: 1fr 1fr;
- gap: 12px;
+            gap: 12px;
             margin-bottom: 12px;
         }
         @media(max-width: 600px) {
@@ -73,21 +74,21 @@
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            background-color: var(--bg-principal);
+            background-color: #ffffff;
             border: 1px solid var(--borde);
-            color: var(--texto-claro);
+            color: var(--texto-oscuro);
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 15px;
-            -webkit-appearance: none;
         }
         input:focus, select:focus, textarea:focus {
-            border-color: var(--verde-tactico);
+            border-color: var(--azul-pastel-oscuro);
             outline: none;
+            box-shadow: 0 0 5px rgba(58, 134, 200, 0.3);
         }
         button {
-            background-color: var(--verde-tactico);
-            color: var(--bg-principal);
+            background-color: var(--azul-pastel-oscuro);
+            color: white;
             border: none;
             padding: 14px;
             font-weight: bold;
@@ -135,32 +136,35 @@
             text-align: left;
         }
         .tabla-personal th {
-            background-color: rgba(11, 19, 41, 0.8);
-            color: var(--verde-tactico);
+            background-color: var(--azul-pastel-claro);
+            color: var(--azul-pastel-oscuro);
             font-size: 12px;
             text-transform: uppercase;
         }
         .resultado-reporte {
-            background-color: #020617;
-            border-left: 4px solid var(--exito);
+            background-color: #ffffff;
+            border: 2px solid var(--azul-pastel-oscuro);
+            border-left: 6px solid var(--exito);
             font-family: 'Courier New', Courier, monospace;
             white-space: pre-wrap;
             padding: 15px;
             border-radius: 5px;
-            color: #adfa1d;
+            color: #000000;
             margin-top: 15px;
             font-size: 16px;
             line-height: 1.5;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
         }
         .oculto { display: none; }
         .info-jefe {
-            background-color: rgba(0, 180, 216, 0.1);
+            background-color: var(--azul-pastel-claro);
             padding: 12px;
             border-radius: 6px;
             margin-bottom: 15px;
             font-size: 14px;
-            border: 1px dashed var(--verde-tactico);
+            border: 1px dashed var(--azul-pastel-oscuro);
             line-height: 1.4;
+            color: var(--azul-pastel-oscuro);
         }
         .btn-logout {
             background-color: var(--alerta);
@@ -179,7 +183,7 @@
             margin-top: 15px;
         }
         .tarjeta-resumen {
-            background: var(--bg-principal);
+            background: var(--azul-pastel-claro);
             border: 1px solid var(--borde);
             padding: 10px;
             border-radius: 5px;
@@ -188,14 +192,21 @@
         .tarjeta-resumen div {
             font-size: 20px;
             font-weight: bold;
-            color: var(--exito);
+            color: var(--azul-pastel-oscuro);
         }
         .bloque-gestion-jefe {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(0, 0, 0, 0.01);
             border: 1px solid var(--borde);
             border-radius: 6px;
             padding: 12px;
             margin-top: 20px;
+        }
+        .input-detalle-novedad {
+            margin-top: 6px;
+            padding: 8px;
+            font-size: 13px;
+            border: 1px dotted var(--azul-pastel-oscuro);
+            background-color: #fffdec;
         }
     </style>
 </head>
@@ -273,7 +284,7 @@
         </div>
 
         <div class="bloque-gestion-jefe">
-            <h4 style="margin: 0 0 10px 0; font-size: 13px; color: var(--verde-tactico); text-transform: uppercase;">Modificaciones de Personal de la Unidad</h4>
+            <h4 style="margin: 0 0 10px 0; font-size: 13px; color: var(--azul-pastel-oscuro); text-transform: uppercase;">Modificaciones de Personal de la Unidad</h4>
             
             <div id="jefe-autenticado-gestion" class="oculto">
                 <button id="btn-deshacer-jefe" class="btn-deshacer oculto" onclick="ejecutarDeshacer('JEFE')">⚠️ DESHACER ELIMINACIÓN</button>
@@ -303,7 +314,7 @@
                         <select id="jefe-add-posicion"></select>
                     </div>
                 </div>
-                <button onclick="jefeAgregarPersonal()" style="background-color: var(--verde-tactico); color:#0b1329; padding: 10px; font-size: 13px; margin-bottom: 15px;">Añadir Funcionario</button>
+                <button onclick="jefeAgregarPersonal()" style="background-color: var(--azul-pastel-oscuro); color:white; padding: 10px; font-size: 13px; margin-bottom: 15px;">Añadir Funcionario</button>
                 
                 <label style="color: var(--alerta);">Lista para Retirar Personal de Alta:</label>
                 <div class="tabla-contenedor">
@@ -321,21 +332,21 @@
             </div>
 
             <div id="jefe-bloqueo-gestion">
-                <div class="campo-grupo" style="grid-template-columns: 2fr 1fr; alignment-items: end;">
+                <div class="campo-grupo" style="grid-template-columns: 2fr 1fr; align-items: end;">
                     <div>
                         <label>Confirme PIN de Seguridad para Modificar Personal:</label>
                         <input type="password" id="jefe-pin-modificar" pattern="\d*" inputmode="numeric" placeholder="****">
                     </div>
-                    <button onclick="desbloquearGestionJefe()" style="margin-top: 22px; padding: 11px; font-size: 12px; background-color: var(--borde); color: white;">Desbloquear</button>
+                    <button onclick="desbloquearGestionJefe()" style="margin-top: 22px; padding: 11px; font-size: 12px; background-color: var(--borde); color: var(--texto-oscuro);">Desbloquear</button>
                 </div>
             </div>
         </div>
 
-        <button onclick="generarReporteTexto()" style="margin-top: 20px; background-color: var(--exito); color: #0b1329;">Generar Reporte de Fuerza</button>
+        <button onclick="generarReporteTexto()" style="margin-top: 20px; background-color: var(--exito); color: white;">Generar Reporte de Fuerza</button>
 
         <div id="contenedor-reporte" class="oculto" style="margin-top: 25px;">
             <h3>Reporte Generado de Forma Exitosa</h3>
-            <button onclick="copiarAlPortapapeles()" style="background-color: #00b4d8; color: white; margin-bottom: 10px;">Copiar Mensaje para WhatsApp</button>
+            <button onclick="copiarAlPortapapeles()" style="background-color: var(--azul-pastel-oscuro); color: white; margin-bottom: 10px;">Copiar Mensaje para WhatsApp</button>
             <div class="resultado-reporte" id="texto-reporte-final"></div>
         </div>
     </div>
@@ -344,8 +355,8 @@
         <button class="btn-logout" onclick="salir()">Salir</button>
         <h3>Panel Administrador General - Wilson Rojas</h3>
         
-        <div style="background: rgba(6, 214, 160, 0.05); padding: 15px; border-radius: 8px; border: 1px solid var(--exito); margin-bottom: 25px;">
-            <h4 style="margin: 0; color: var(--exito); text-transform: uppercase; font-size: 14px;">Consolidado General (Tres Grupos)</h4>
+        <div style="background: var(--azul-pastel-claro); padding: 15px; border-radius: 8px; border: 1px solid var(--azul-pastel-oscuro); margin-bottom: 25px;">
+            <h4 style="margin: 0; color: var(--azul-pastel-oscuro); text-transform: uppercase; font-size: 14px;">Consolidado General (Tres Grupos)</h4>
             <div class="cuadros-resumen">
                 <div class="tarjeta-resumen">
                     <label>Fuerza Efectiva</label>
@@ -353,15 +364,15 @@
                 </div>
                 <div class="tarjeta-resumen">
                     <label>Granaderos</label>
-                    <div id="resumen-granaderos" style="color: var(--verde-tactico);">0</div>
+                    <div id="resumen-granaderos">0</div>
                 </div>
                 <div class="tarjeta-resumen">
                     <label>Grupo COR</label>
-                    <div id="resumen-cor" style="color: var(--verde-tactico);">0</div>
+                    <div id="resumen-cor">0</div>
                 </div>
                 <div class="tarjeta-resumen">
                     <label>Tiro Policial</label>
-                    <div id="resumen-tiro" style="color: var(--verde-tactico);">0</div>
+                    <div id="resumen-tiro">0</div>
                 </div>
             </div>
         </div>
@@ -408,7 +419,7 @@
             </div>
         </div>
 
-        <button onclick="agregarPersonal()" style="background-color: var(--exito); color:#0b1329;">Agregar a la Base de Datos</button>
+        <button onclick="agregarPersonal()" style="background-color: var(--azul-pastel-oscuro); color:white;">Agregar a la Base de Datos</button>
 
         <h3 style="margin-top:30px;">Inventario General de Personal</h3>
         <div class="tabla-contenedor">
@@ -463,18 +474,18 @@
 
         { grupo: "COR", grado: "IJ", apellido: "SANABRIA TORRALBA", cat: 1 },
         { grupo: "COR", grado: "IJ", apellido: "LAVERDE ABREGO", cat: 1 },
-        { grupo: "COR", status: "SI", apellido: "SUAREZ GARCIA", cat: 1 },
         { grupo: "COR", grado: "IT", apellido: "AVENDAÑO FIGUEROA", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "VARGAS ALDANA", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "CRUZ SUAREZ", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "ACEVEDO RODRIGUEZ", cat: 1 },
+        { grupo: "COR", grado: "SI", apellido: "SUAREZ GARCIA", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "FORERO RAMIREZ", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "RONDON CANIZALES", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "BEDOYA GIRALDO", cat: 1 },
         { grupo: "COR", grado: "SI", apellido: "MONTENEGRO ILES", cat: 1 },
         { grupo: "COR", grado: "PT", apellido: "RODRIGUEZ FLOREZ", cat: 2 },
         { grupo: "COR", grado: "PT", apellido: "PEREZ CRESPO", cat: 2 },
-        { grupo: "COR", grado: "PT", apellido: "BERMUDEZ LOPEZ", cat: 2 },
+        { grupo: "COR", stroke: "PT", apellido: "BERMUDEZ LOPEZ", cat: 2 },
         { grupo: "COR", grado: "PT", apellido: "MARTINEZ VALENCIA", cat: 2 },
         { grupo: "COR", grado: "PT", apellido: "ZAPATA VELEZ", cat: 2 },
 
@@ -606,32 +617,36 @@
 
     const OPCIONES_NOVEDAD = `
         <option value="FORMACIÓN">FORMACIÓN</option>
-        <option value="LABORANDO">LABORANDO</option>
-        <option value="OFICIAL DE SERVICIO">OFICIAL DE SERVICIO</option>
-        <option value="SUB SERVICIO">SUB SERVICIO</option>
+        <option value="LABORANDO">LABORANDO (ACTIVIDAD)</option>
+        <option value="RECIBE/OS">RECIBE/OS</option>
+        <option value="ENTREGA/OS">ENTREGA/OS</option>
+        <option value="RECIBE/SS">RECIBE/SS</option>
+        <option value="ENTREGA/SS">ENTREGA/SS</option>
+        <option value="RECIBE/S.SEMANA">RECIBE/S.SEMANA</option>
+        <option value="ENTREGA/S.SEMANA">ENTREGA/S.SEMANA</option>
         <option value="S.SEMANA">S.SEMANA</option>
+        <option value="REALIZÓ 1RO 1500">REALIZÓ 1RO 1500</option>
+        <option value="CLASE AXP">CLASE AXP</option>
+        <option value="COMISIÓN SERVICIO">COMISIÓN SERVICIO (LUGAR)</option>
+        <option value="COMISIÓN ESTUDIO">COMISIÓN ESTUDIO (LUGAR)</option>
+        <option value="COMISIÓN AL EXTERIOR">COMISIÓN AL EXTERIOR (LUGAR)</option>
+        <option value="CURSO DE ASCENSO">CURSO DE ASCENSO</option>
         <option value="FRANQUICIA">FRANQUICIA</option>
-        <option value="EXCUSA TOTAL">EXCUSA TOTAL</option>
+        <option value="PERMISOS ESPECIALES">PERMISOS ESPECIALES</option>
+        <option value="PERMISO DILIGENCIA PERSONAL">PERMISO DILIGENCIA PERSONAL</option>
+        <option value="CITA MEDICA CENOP">CITA MEDICA CENOP</option>
+        <option value="PERMISO CITA MÉDICA">PERMISO CITA MÉDICA (LUGAR)</option>
+        <option value="EXCUSA PARCIAL">EXCUSA PARCIAL (HASTA EL)</option>
+        <option value="EXCUSA TOTAL">EXCUSA TOTAL (HASTA EL)</option>
         <option value="LEY MARÍA">LEY MARÍA</option>
         <option value="LEY JOSÉ">LEY JOSÉ</option>
-        <option value="PERMISOS ESPECIALES">PERMISOS ESPECIALES</option>
         <option value="VACACIONES">VACACIONES</option>
         <option value="HOSPITALIZADO">HOSPITALIZADO</option>
-        <option value="INCAPACIDAD PARCIAL">INCAPACIDAD PARCIAL</option>
-        <option value="COMISIÓN SERVICIO">COMISIÓN SERVICIO</option>
-        <option value="COMISIÓN ESTUDIO">COMISIÓN ESTUDIO</option>
         <option value="PERMISO SEMANA SANTA">PERMISO SEMANA SANTA</option>
         <option value="PERMISO DICIEMBRE">PERMISO DICIEMBRE</option>
         <option value="APOYO AXP PERMANENTE">APOYO AXP PERMANENTE</option>
         <option value="APOYO SEGURIDAD">APOYO SEGURIDAD</option>
-        <option value="COMISIÓN AL EXTERIOR">COMISIÓN AL EXTERIOR</option>
-        <option value="COMISIÓN DE ESTUDIOS EN EL EXTERIOR">COMISIÓN DE ESTUDIOS EN EL EXTERIOR</option>
-        <option value="PERMISO DILIGENCIA PERSONAL">PERMISO DILIGENCIA PERSONAL</option>
-        <option value="CURSO DE ASCENSO">CURSO DE ASCENSO</option>
-        <option value="PERMISO CITA MÉDICA">PERMISO CITA MÉDICA</option>
         <option value="SEPARACIÓN TEMPORAL">SEPARACIÓN TEMPORAL</option>
-        <option value="EVADIDO">EVADIDO</option>
-        <option value="EXCUSA PARCIAL">EXCUSA PARCIAL</option>
         <option value="CONCURSO PATRULLEROS">CONCURSO PATRULLEROS</option>
         <option value="LICENCIA DE MATERNIDAD O PATERNIDAD">LICENCIA DE MATERNIDAD O PATERNIDAD</option>
         <option value="LICENCIA NO REMUNERADA">LICENCIA NO REMUNERADA</option>
@@ -644,26 +659,44 @@
         <option value="RECIEN TRASLADADO (PENDIENTE POR PRESENTAR A LA UNIDAD)">RECIEN TRASLADADO (PENDIENTE POR PRESENTAR A LA UNIDAD)</option>
         <option value="PENDIENTE POR TRAMITE DE REINTEGRO">PENDIENTE POR TRAMITE DE REINTEGRO</option>
         <option value="SUSPENSIÓN">SUSPENSIÓN</option>
-        <option value="CLASE AXP">CLASE AXP</option>
-        <option value="REALIZÓ 1RO 1500">REALIZÓ 1RO 1500</option>
-        <option value="CITA MEDICA CENOP">CITA MEDICA CENOP</option>
         <option value="RETRASADO">RETRASADO</option>
     `;
+
+    function evaluarCampoDetalle(selectElement, idUnico) {
+        const valor = selectElement.value;
+        const inputDetalle = document.getElementById('detalle-' + idUnico);
+        
+        if (valor === "LABORANDO" || valor === "COMISIÓN SERVICIO" || valor === "COMISIÓN ESTUDIO" || 
+            valor === "COMISIÓN AL EXTERIOR" || valor === "PERMISO CITA MÉDICA" || 
+            valor === "EXCUSA PARCIAL" || valor === "EXCUSA TOTAL") {
+            
+            inputDetalle.classList.remove('oculto');
+            
+            if (valor === "LABORANDO") inputDetalle.placeholder = "Escriba la Actividad...";
+            else if (valor.includes("EXCUSA")) inputDetalle.placeholder = "Fecha: Ej: DD/MM/AAAA o 3 días...";
+            else inputDetalle.placeholder = "Escriba el Lugar...";
+        } else {
+            inputDetalle.classList.add('oculto');
+            inputDetalle.value = "";
+        }
+    }
 
     function renderJefe() {
         const tabla = document.getElementById('tabla-personal-jefe');
         tabla.innerHTML = "";
         const miGente = DB.filter(p => p.grupo === grupoActivo);
 
-        miGente.forEach((persona) => {
+        miGente.forEach((persona, i) => {
+            const idUnico = grupoActivo + '_' + i;
             tabla.innerHTML += `
                 <tr>
                     <td><strong>${persona.grado}</strong></td>
                     <td>${persona.apellido}</td>
                     <td>
-                        <select class="novedad-select" data-cat="${persona.cat}" data-nom="${persona.grado} ${persona.apellido}">
+                        <select class="novedad-select" data-cat="${persona.cat}" data-nom="${persona.grado} ${persona.apellido}" data-id="${idUnico}" onchange="evaluarCampoDetalle(this, '${idUnico}')">
                             ${OPCIONES_NOVEDAD}
                         </select>
+                        <input type="text" id="detalle-${idUnico}" class="input-detalle-novedad oculto" placeholder="">
                     </td>
                 </tr>
             `;
@@ -775,25 +808,24 @@
         const lema = document.getElementById('lema-grupo').value.toUpperCase();
 
         let fEfe = [0, 0, 0, 0];
-        let fDis = [0, 0, 0, 0];
         let fNov = [0, 0, 0, 0];
+        let fDis = [0, 0, 0, 0];
         
         let conteos = {
-            "FORMACIÓN": [0,0,0,0], "LABORANDO": [0,0,0,0], "OFICIAL DE SERVICIO": [0,0,0,0], 
-            "SUB SERVICIO": [0,0,0,0], "S.SEMANA": [0,0,0,0], "FRANQUICIA": [0,0,0,0], 
-            "EXCUSA TOTAL": [0,0,0,0], "LEY MARÍA": [0,0,0,0], "LEY JOSÉ": [0,0,0,0], 
-            "PERMISOS ESPECIALES": [0,0,0,0], "VACACIONES": [0,0,0,0], "HOSPITALIZADO": [0,0,0,0], 
-            "INCAPACIDAD PARCIAL": [0,0,0,0], "COMISIÓN SERVICIO": [0,0,0,0], "COMISIÓN ESTUDIO": [0,0,0,0],
-            "PERMISO SEMANA SANTA": [0,0,0,0], "PERMISO DICIEMBRE": [0,0,0,0], "APOYO AXP PERMANENTE": [0,0,0,0], 
-            "APOYO SEGURIDAD": [0,0,0,0], "COMISIÓN AL EXTERIOR": [0,0,0,0], "COMISIÓN DE ESTUDIOS EN EL EXTERIOR": [0,0,0,0], 
-            "PERMISO DILIGENCIA PERSONAL": [0,0,0,0], "CURSO DE ASCENSO": [0,0,0,0], "PERMISO CITA MÉDICA": [0,0,0,0], 
-            "SEPARACIÓN TEMPORAL": [0,0,0,0], "EVADIDO": [0,0,0,0], "EXCUSA PARCIAL": [0,0,0,0], 
-            "CONCURSO PATRULLEROS": [0,0,0,0], "LICENCIA DE MATERNIDAD O PATERNIDAD": [0,0,0,0], "LICENCIA NO REMUNERADA": [0,0,0,0], 
-            "LICENCIA POR LUTO": [0,0,0,0], "LICENCIA REMUNERADA": [0,0,0,0], "PENDIENTE ACTUALIZAR TRASLADO SIATH": [0,0,0,0], 
-            "PENDIENTE POR RETIRAR": [0,0,0,0], "CAPTURADO": [0,0,0,0], "RECIEN TRASLADADO (NO PRESENTADO AL CENOP)": [0,0,0,0], 
-            "RECIEN TRASLADADO (PENDIENTE POR PRESENTAR A LA UNIDAD)": [0,0,0,0], "PENDIENTE POR TRAMITE DE REINTEGRO": [0,0,0,0], 
-            "SUSPENSIÓN": [0,0,0,0], "CLASE AXP": [0,0,0,0], "REALIZÓ 1RO 1500": [0,0,0,0], 
-            "CITA MEDICA CENOP": [0,0,0,0], "RETRASADO": [0,0,0,0]
+            "FORMACIÓN": [0,0,0,0], "LABORANDO": [0,0,0,0], "RECIBE/OS": [0,0,0,0], "ENTREGA/OS": [0,0,0,0],
+            "RECIBE/SS": [0,0,0,0], "ENTREGA/SS": [0,0,0,0], "RECIBE/S.SEMANA": [0,0,0,0], "ENTREGA/S.SEMANA": [0,0,0,0],
+            "S.SEMANA": [0,0,0,0], "REALIZÓ 1RO 1500": [0,0,0,0], "CLASE AXP": [0,0,0,0], "COMISIÓN SERVICIO": [0,0,0,0], 
+            "COMISIÓN ESTUDIO": [0,0,0,0], "COMISIÓN AL EXTERIOR": [0,0,0,0], "CURSO DE ASCENSO": [0,0,0,0], 
+            "FRANQUICIA": [0,0,0,0], "PERMISOS ESPECIALES": [0,0,0,0], "PERMISO DILIGENCIA PERSONAL": [0,0,0,0], 
+            "CITA MEDICA CENOP": [0,0,0,0], "PERMISO CITA MÉDICA": [0,0,0,0], "EXCUSA PARCIAL": [0,0,0,0], 
+            "EXCUSA TOTAL": [0,0,0,0], "LEY MARÍA": [0,0,0,0], "LEY JOSÉ": [0,0,0,0], "VACACIONES": [0,0,0,0], 
+            "HOSPITALIZADO": [0,0,0,0], "PERMISO SEMANA SANTA": [0,0,0,0], "PERMISO DICIEMBRE": [0,0,0,0],
+            "APOYO AXP PERMANENTE": [0,0,0,0], "APOYO SEGURIDAD": [0,0,0,0], "SEPARACIÓN TEMPORAL": [0,0,0,0],
+            "CONCURSO PATRULLEROS": [0,0,0,0], "LICENCIA DE MATERNIDAD O PATERNIDAD": [0,0,0,0], "LICENCIA NO REMUNERADA": [0,0,0,0],
+            "LICENCIA POR LUTO": [0,0,0,0], "LICENCIA REMUNERADA": [0,0,0,0], "PENDIENTE ACTUALIZAR TRASLADO SIATH": [0,0,0,0],
+            "PENDIENTE POR RETIRAR": [0,0,0,0], "CAPTURADO": [0,0,0,0], "RECIEN TRASLADADO (NO PRESENTADO AL CENOP)": [0,0,0,0],
+            "RECIEN TRASLADADO (PENDIENTE POR PRESENTAR A LA UNIDAD)": [0,0,0,0], "PENDIENTE POR TRAMITE DE REINTEGRO": [0,0,0,0],
+            "SUSPENSIÓN": [0,0,0,0], "RETRASADO": [0,0,0,0]
         };
 
         let listasNombres = {};
@@ -804,27 +836,33 @@
             const novedad = elSelect.value;
             const cat = parseInt(elSelect.dataset.cat);
             const nombreCompleto = elSelect.dataset.nom;
+            const idUnico = elSelect.dataset.id;
+            
+            const inputDetalle = document.getElementById('detalle-' + idUnico);
+            let textoAdicional = "";
+            if (inputDetalle && inputDetalle.value.trim() !== "") {
+                textoAdicional = " (" + inputDetalle.value.trim().toUpperCase() + ")";
+            }
 
+            // Suma incondicional a la Fuerza Efectiva global
             fEfe[cat]++;
+            
+            // CORRECCIÓN MATEMÁTICA CRÍTICA: 
+            // Si el funcionario NO está en la opción de FORMACIÓN, significa que no va a formar.
+            // Por consiguiente, se suma como novedad restrictiva para que reste de la Fuerza Disponible.
+            if(novedad !== "FORMACIÓN") {
+                fNov[cat]++;
+            }
+
             if(conteos[novedad]) {
                 conteos[novedad][cat]++;
-                listasNombres[novedad].push(nombreCompleto);
+                listasNombres[novedad].push(nombreCompleto + textoAdicional);
             }
         });
 
-        // REGLA OPERATIVA CORREGIDA: 
-        // Fuerza Disponible es estrictamente igual a FORMACIÓN.
-        // Novedades es absolutamente todo lo demás (Laborando + resto de situaciones).
-        for(let i=0; i<4; i++) {
-            fDis[i] = conteos["FORMACIÓN"][i];
-        }
-
-        for(let n in conteos) {
-            if(n !== "FORMACIÓN") {
-                for(let i=0; i<4; i++) {
-                    fNov[i] += conteos[n][i];
-                }
-            }
+        // Cálculo dinámico final: Disponible = Efectiva - Novedades
+        for (let i = 0; i < 4; i++) {
+            fDis[i] = fEfe[i] - fNov[i];
         }
 
         const fmt = (a) => `${a[0]}-${a[1]}-${a[2]}-${a[3]}= ${a.reduce((x,y)=>x+y,0)}`;
