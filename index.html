@@ -208,6 +208,32 @@
             border: 1px dotted var(--azul-pastel-oscuro);
             background-color: #fffdec;
         }
+        /* Estilos para Notificaciones Toast */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 10;
+            left: 50%;
+            bottom: 30px;
+            font-size: 15px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+        }
+        #toast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @-webkit-keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @-webkit-keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
@@ -216,6 +242,9 @@
     <div class="titulo-app">
         <strong>Control de Partes y Novedades del Personal</strong>
     </div>
+
+    <!-- Div para Notificaciones Toast -->
+    <div id="toast">Notificación</div>
 
     <div id="pantalla-login" class="seccion">
         <h3>Autenticación de Seguridad</h3>
@@ -485,7 +514,7 @@
         { grupo: "COR", grado: "SI", apellido: "MONTENEGRO ILES", cat: 1 },
         { grupo: "COR", grado: "PT", apellido: "RODRIGUEZ FLOREZ", cat: 2 },
         { grupo: "COR", grado: "PT", apellido: "PEREZ CRESPO", cat: 2 },
-        { grupo: "COR", stroke: "PT", apellido: "BERMUDEZ LOPEZ", cat: 2 },
+        { grupo: "COR", grado: "PT", apellido: "BERMUDEZ LOPEZ", cat: 2 },
         { grupo: "COR", grado: "PT", apellido: "MARTINEZ VALENCIA", cat: 2 },
         { grupo: "COR", grado: "PT", apellido: "ZAPATA VELEZ", cat: 2 },
 
@@ -509,6 +538,18 @@
     let DB = JSON.parse(localStorage.getItem('sistema_partes_db')) || DEFAULT_DB;
     let grupoActivo = "";
     let ultimoEliminado = null;
+
+    // Función para mostrar Notificaciones Toast
+    function mostrarNotificacion(mensaje, tipo = 'info') {
+        const toast = document.getElementById("toast");
+        toast.innerText = mensaje;
+        if (tipo === 'exito') toast.style.backgroundColor = 'var(--exito)';
+        else if (tipo === 'error') toast.style.backgroundColor = 'var(--alerta)';
+        else toast.style.backgroundColor = '#333';
+        
+        toast.className = "show";
+        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+    }
 
     window.onload = function() {
         const fInput = document.getElementById('fecha-parte');
@@ -538,6 +579,7 @@
 
         if (accesoValido) {
             grupoActivo = grupo;
+            mostrarNotificacion("Acceso correcto", 'exito');
             document.getElementById('pantalla-login').classList.add('oculto');
             document.getElementById('login-pin').value = "";
 
@@ -558,7 +600,7 @@
                 renderJefe();
             }
         } else {
-            alert("¡PIN incorrecto para la unidad seleccionada!");
+            mostrarNotificacion("¡PIN incorrecto para la unidad seleccionada!", 'error');
         }
     }
 
@@ -578,8 +620,9 @@
             document.getElementById('jefe-autenticado-gestion').classList.remove('oculto');
             cargarDesplegablePosicionJefe();
             renderJefeListasEdicion();
+            mostrarNotificacion("Panel de gestión desbloqueado", 'exito');
         } else {
-            alert("¡PIN incorrecto! No tiene autorización para modificar el personal.");
+            mostrarNotificacion("¡PIN incorrecto! No tiene autorización.", 'error');
         }
     }
 
@@ -632,6 +675,9 @@
         <option value="COMISIÓN AL EXTERIOR">COMISIÓN AL EXTERIOR (LUGAR)</option>
         <option value="CURSO DE ASCENSO">CURSO DE ASCENSO</option>
         <option value="FRANQUICIA">FRANQUICIA</option>
+        <option value="DESCANSO DEL SERVICIO">DESCANSO DEL SERVICIO</option>
+        <option value="PERMISO DE ESTUDIO">PERMISO DE ESTUDIO</option>
+        <option value="PERMISO COMPENSATORIO">PERMISO COMPENSATORIO</option>
         <option value="PERMISOS ESPECIALES">PERMISOS ESPECIALES</option>
         <option value="PERMISO DILIGENCIA PERSONAL">PERMISO DILIGENCIA PERSONAL</option>
         <option value="CITA MEDICA CENOP">CITA MEDICA CENOP</option>
@@ -747,6 +793,7 @@
         cargarDesplegablePosicionJefe();
         renderJefeListasEdicion();
         ocultarBotonesDeshacer();
+        mostrarNotificacion("Funcionario agregado con éxito", "exito");
 
         document.getElementById('jefe-add-grado').value = "";
         document.getElementById('jefe-add-apellido').value = "";
@@ -761,6 +808,7 @@
             cargarDesplegablePosicionJefe();
             renderJefeListasEdicion();
             document.getElementById('btn-deshacer-jefe').classList.remove('oculto');
+            mostrarNotificacion("Funcionario retirado", "info");
         }
     }
 
@@ -773,6 +821,7 @@
             calcularConsolidado();
             renderAdmin();
             document.getElementById('btn-deshacer-admin').classList.remove('oculto');
+            mostrarNotificacion("Funcionario eliminado", "info");
         }
     }
 
@@ -792,7 +841,7 @@
                 cargarDesplegablePosicionJefe();
                 renderJefeListasEdicion();
             }
-            alert("¡Eliminación revertida! El funcionario ha vuelto a su jerarquía.");
+            mostrarNotificacion("¡Eliminación revertida exitosamente!", "exito");
         }
     }
 
@@ -816,7 +865,8 @@
             "RECIBE/SS": [0,0,0,0], "ENTREGA/SS": [0,0,0,0], "RECIBE/S.SEMANA": [0,0,0,0], "ENTREGA/S.SEMANA": [0,0,0,0],
             "S.SEMANA": [0,0,0,0], "REALIZÓ 1RO 1500": [0,0,0,0], "CLASE AXP": [0,0,0,0], "COMISIÓN SERVICIO": [0,0,0,0], 
             "COMISIÓN ESTUDIO": [0,0,0,0], "COMISIÓN AL EXTERIOR": [0,0,0,0], "CURSO DE ASCENSO": [0,0,0,0], 
-            "FRANQUICIA": [0,0,0,0], "PERMISOS ESPECIALES": [0,0,0,0], "PERMISO DILIGENCIA PERSONAL": [0,0,0,0], 
+            "FRANQUICIA": [0,0,0,0], "DESCANSO DEL SERVICIO": [0,0,0,0], "PERMISO DE ESTUDIO": [0,0,0,0], "PERMISO COMPENSATORIO": [0,0,0,0],
+            "PERMISOS ESPECIALES": [0,0,0,0], "PERMISO DILIGENCIA PERSONAL": [0,0,0,0], 
             "CITA MEDICA CENOP": [0,0,0,0], "PERMISO CITA MÉDICA": [0,0,0,0], "EXCUSA PARCIAL": [0,0,0,0], 
             "EXCUSA TOTAL": [0,0,0,0], "LEY MARÍA": [0,0,0,0], "LEY JOSÉ": [0,0,0,0], "VACACIONES": [0,0,0,0], 
             "HOSPITALIZADO": [0,0,0,0], "PERMISO SEMANA SANTA": [0,0,0,0], "PERMISO DICIEMBRE": [0,0,0,0],
@@ -844,12 +894,8 @@
                 textoAdicional = " (" + inputDetalle.value.trim().toUpperCase() + ")";
             }
 
-            // Suma incondicional a la Fuerza Efectiva global
             fEfe[cat]++;
             
-            // CORRECCIÓN MATEMÁTICA CRÍTICA: 
-            // Si el funcionario NO está en la opción de FORMACIÓN, significa que no va a formar.
-            // Por consiguiente, se suma como novedad restrictiva para que reste de la Fuerza Disponible.
             if(novedad !== "FORMACIÓN") {
                 fNov[cat]++;
             }
@@ -860,7 +906,6 @@
             }
         });
 
-        // Cálculo dinámico final: Disponible = Efectiva - Novedades
         for (let i = 0; i < 4; i++) {
             fDis[i] = fEfe[i] - fNov[i];
         }
@@ -919,14 +964,15 @@
 
         document.getElementById('texto-reporte-final').innerText = txt;
         document.getElementById('contenedor-reporte').classList.remove('oculto');
+        mostrarNotificacion("Reporte de fuerza generado", "exito");
     }
 
     function copiarAlPortapapeles() {
         const elTexto = document.getElementById('texto-reporte-final').innerText;
         navigator.clipboard.writeText(elTexto).then(() => {
-            alert("¡Reporte copiado con éxito!");
+            mostrarNotificacion("¡Reporte copiado al portapapeles!", 'exito');
         }).catch(() => {
-            alert("Error al copiar automáticamente.");
+            mostrarNotificacion("Error al copiar automáticamente.", 'error');
         });
     }
 
@@ -977,6 +1023,7 @@
         calcularConsolidado();
         renderAdmin();
         ocultarBotonesDeshacer();
+        mostrarNotificacion("Funcionario agregado con éxito", "exito");
 
         document.getElementById('add-grado').value = "";
         document.getElementById('add-apellido').value = "";
