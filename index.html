@@ -4,29 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Digital de Partes y Novedades</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-principal: #f0f4f8;
-            --bg-tarjeta: #ffffff;
-            --azul-pastel-oscuro: #3a86c8;
-            --azul-pastel-claro: #e1ecf7;
-            --texto-oscuro: #2c3e50;
-            --borde: #cbd5e1;
-            --exito: #2ecc71;
-            --alerta: #e74c3c;
-            --gris-txt: #64748b;
-            --advertencia: #f1c40f;
+            --bg-principal: #060814;
+            --bg-tarjeta: #0d1230;
+            --azul-pastel-oscuro: #00e0ff;
+            --azul-pastel-claro: #14204a;
+            --texto-oscuro: #eaf9ff;
+            --borde: #1e2a5e;
+            --exito: #39ff88;
+            --alerta: #ff2079;
+            --gris-txt: #8aa0d4;
+            --advertencia: #ffe600;
+            --neon-magenta: #ff00e6;
+            --neon-violeta: #9d4dff;
         }
+        * { box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Share Tech Mono', 'Segoe UI', monospace;
             background-color: var(--bg-principal);
+            background-image:
+                linear-gradient(rgba(0,224,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,0,230,0.05) 1px, transparent 1px),
+                radial-gradient(ellipse at top, rgba(157,77,255,0.15), transparent 60%);
+            background-size: 28px 28px, 28px 28px, 100% 100%;
             color: var(--texto-oscuro);
             margin: 0;
             padding: 10px;
+            min-height: 100vh;
         }
         .contenedor {
             max-width: 750px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
         .titulo-app {
             text-align: center;
@@ -36,24 +49,30 @@
             margin-bottom: 20px;
             text-transform: uppercase;
             font-size: 18px;
-            letter-spacing: 1px;
+            letter-spacing: 3px;
             line-height: 1.3;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-shadow: 0 0 6px var(--azul-pastel-oscuro), 0 0 18px rgba(0,224,255,0.6);
         }
         .seccion {
             background-color: var(--bg-tarjeta);
             border: 1px solid var(--borde);
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 15px;
             margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 0 20px rgba(0,224,255,0.08), 0 4px 10px rgba(0,0,0,0.4), inset 0 0 30px rgba(157,77,255,0.05);
         }
         h3 {
-            color: var(--azul-pastel-oscuro);
+            color: var(--neon-magenta);
             margin-top: 0;
             text-transform: uppercase;
-            border-left: 4px solid var(--azul-pastel-oscuro);
+            border-left: 4px solid var(--neon-magenta);
             padding-left: 10px;
             font-size: 15px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(255,0,230,0.55);
         }
         .campo-grupo {
             display: grid;
@@ -74,21 +93,22 @@
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            background-color: #ffffff;
+            background-color: #05060f;
             border: 1px solid var(--borde);
-            color: var(--texto-oscuro);
+            color: var(--azul-pastel-oscuro);
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 15px;
+            font-family: 'Share Tech Mono', monospace;
         }
         input:focus, select:focus, textarea:focus {
             border-color: var(--azul-pastel-oscuro);
             outline: none;
-            box-shadow: 0 0 5px rgba(58, 134, 200, 0.3);
+            box-shadow: 0 0 10px rgba(0, 224, 255, 0.45);
         }
         button {
-            background-color: var(--azul-pastel-oscuro);
-            color: white;
+            background: linear-gradient(90deg, var(--azul-pastel-oscuro), var(--neon-violeta));
+            color: #050414;
             border: none;
             padding: 14px;
             font-weight: bold;
@@ -97,10 +117,13 @@
             cursor: pointer;
             width: 100%;
             font-size: 14px;
+            letter-spacing: 1px;
             transition: 0.2s;
             display: block;
+            font-family: 'Orbitron', sans-serif;
+            box-shadow: 0 0 12px rgba(0,224,255,0.35);
         }
-        button:hover { opacity: 0.9; }
+        button:hover { opacity: 0.92; box-shadow: 0 0 20px rgba(255,0,230,0.55); }
         .btn-deshacer {
             background-color: var(--advertencia);
             color: #000;
@@ -142,7 +165,7 @@
             text-transform: uppercase;
         }
         .resultado-reporte {
-            background-color: #ffffff;
+            background-color: #f5faff;
             border: 2px solid var(--azul-pastel-oscuro);
             border-left: 6px solid var(--exito);
             font-family: 'Courier New', Courier, monospace;
@@ -153,7 +176,7 @@
             margin-top: 15px;
             font-size: 16px;
             line-height: 1.5;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 0 18px rgba(0,224,255,0.25);
         }
         .oculto { display: none; }
         .info-jefe {
@@ -175,6 +198,7 @@
             margin-top: -5px;
             font-size: 12px;
             border-radius: 4px;
+            box-shadow: 0 0 10px rgba(255,32,121,0.5);
         }
         .cuadros-resumen {
             display: grid;
@@ -193,9 +217,10 @@
             font-size: 20px;
             font-weight: bold;
             color: var(--azul-pastel-oscuro);
+            text-shadow: 0 0 8px rgba(0,224,255,0.5);
         }
         .bloque-gestion-jefe {
-            background: rgba(0, 0, 0, 0.01);
+            background: rgba(0, 224, 255, 0.03);
             border: 1px solid var(--borde);
             border-radius: 6px;
             padding: 12px;
@@ -206,7 +231,8 @@
             padding: 8px;
             font-size: 13px;
             border: 1px dotted var(--azul-pastel-oscuro);
-            background-color: #fffdec;
+            background-color: #05060f;
+            color: var(--azul-pastel-oscuro);
         }
         /* Estilos para Notificaciones Toast */
         #toast {
